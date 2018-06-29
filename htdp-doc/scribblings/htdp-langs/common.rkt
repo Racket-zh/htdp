@@ -15,20 +15,17 @@
 @; -----------------------------------------------------------------------------
 (define dots (bold "..."))
 
-(define htdp "http://www.ccs.neu.edu/home/matthias/HtDP2e/")
+(define htdp "http://www.htdp.org/2018-01-06/Book/")
 (define i1-2 (string-append htdp "i1-2.html"))
 (define i2-3 (string-append htdp "i2-3.html"))
 
 (define grammar
-  @list{The grammar notation uses the notation @racket[X #, @dots] (bold
-  dots) to indicate that @racket[X] may occur an arbitrary number of times
-  (zero, one, or more). Separately, the grammar also defines @racket[...] as an
-  identifier to be used in templates.}) 
+  @list{语法符号使用符号 @racket[X #, @dots] （粗体的点）表示 @racket[X]
+  可能出现任意多次（零次，一次或多次）。此外，另外，语法还将 @racket[...]
+  定义为可以在模板中使用的标识符。}) 
 
 (define i1-2-expl
-  @list{See @link[i1-2]{How to Design Programs/2e, Intermezzo 1} for an
-  explanation of the Beginning Student Language.})
+  @list{关于初级语言的解释，请参阅 @link[i1-2]{《程序设计方法（第二版）》的独立章节1}。})
 
 (define i2-3-expl
-  @list{See @link[i2-3]{How to Design Programs/2e, Intermezzo 2} for an explanation
-  of quoted lists.})
+  @list{关于引用表的解释，请参阅 @link[i2-3]{《程序设计方法（第二版）》的独立章节2}。})
