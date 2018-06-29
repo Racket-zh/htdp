@@ -65,39 +65,24 @@
   (make-splice
    (list
 
-@t{A @racket[_name] or a @racket[_variable] is a sequence of characters
-not including a space or one of the following:}
+@t{@racket[_name]或@racket[_variable]是不包含空格或下列字符的字符串：}
 
 @t{@hspace[2] @litchar{"} @litchar{,} @litchar{'} @litchar{`}
 @litchar{(} @litchar{)} @litchar{[} @litchar{]}
 @litchar["{"] @litchar["}"] @litchar{|} @litchar{;}
 @litchar{#}}
 
-@t{A @racket[_number] is a number such as @racket[123], @racket[3/2], or
-@racket[5.5].}
+@t{@racket[_number]是类似@racket[123]，@racket[3/2]或@racket[5.5]的数。}
 
-@t{A @racket[_boolean] is one of: @code{#true} or  @code{#false}.
+@t{@racket[_boolean]是@code{#true}或@code{#false}之一。常量@code{#true}的其他拼写方式是：@racket[#t]、@racket[true]和@code{#T}。同理，@code{#f}、@racket[false]或@code{#F}都被认为是@code{#false}。}
 
-Alternative spellings for the @code{#true} constant are @racket[#t],
-@racket[true], and @code{#T}. Similarly, @code{#f}, @racket[false], or
-@code{#F} are also recognized as @code{#false}.}
+@t{@racket[_symbol]是引号字符后跟name。符号是一种值，就和@code{42}、@code{'()}或@code{#false}一样。}
 
-@t{A @racket[_symbol] is a quote character followed by a name. A
-symbol is a value, just like @code{42}, @code{'()}, or @code{#false}.}
+@t{@racket[_string]是由一对@litchar{"}包围的字符序列。与符号不同，字符串可以被分割成字符，或者用各种函数操作。例如，@racket["abcdef"]、@racket["This is a string"]和@racket[#,ex-str]都是字符串。}
 
-@t{A @racket[_string] is a sequence of characters enclosed by a pair of @litchar{"}. Unlike
-symbols, strings may be split into characters and manipulated by a
-variety of functions.  For example, @racket["abcdef"],
-@racket["This is a string"], and @racket[#,ex-str] are all strings.}
+@t{@racket[_character]由@litchar{#\}开始，并包含该字符的名称。例如，@racket[#\a]、@racket[#\b]和@racket[#\space]都是字符。}
 
-@t{A @racket[_character] begins with @litchar{#\} and has the
-name of the character. For example, @racket[#\a], @racket[#\b],
-and @racket[#\space] are characters.}
-
-@t{In @seclink[(string-append section-prefix "-syntax")]{function calls}, the function appearing
-immediately after the open parenthesis can be any functions defined
-with @racket[define] or @racket[define-struct], or any one of the
-@seclink[(string-append section-prefix "-pre-defined")]{pre-defined functions}.}
+@t{在@seclink[(string-append section-prefix "-syntax")]{函数调用}中，紧跟开括号出现的函数可以是由@racket[define]或@racket[define-struct]定义的任意函数，或者是任何的@seclink[(string-append section-prefix "-pre-defined")]{预定义函数}。}
 
 )))
 
