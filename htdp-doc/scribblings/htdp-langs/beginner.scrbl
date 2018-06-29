@@ -3,7 +3,7 @@
           (for-label lang/htdp-beginner))
 
 
-@title[#:tag "beginner"]{Beginning Student}
+@title[#:tag "beginner"]{初级}
 
 @section-index["BSL"]
 
@@ -47,7 +47,7 @@
 
 @; --------------------------------------------------
 
-@section[#:tag "beginner-syntax"]{Syntax}
+@section[#:tag "beginner-syntax"]{语法}
 
 @(define-forms/normal define)
 @(define-form/explicit-lambda define lambda)
@@ -57,8 +57,7 @@
 @defform[(quote name)]
 )]{
 
-A quoted @racket[name] is a symbol. A symbol is a value, just like
-@racket[0] or @racket['()].}
+引用的@racket[name]就是符号。符号是一种值，就和@racket[0]或@racket['()]一样。}
 
 @(prim-forms ("beginner")
              define 
@@ -84,11 +83,9 @@ A quoted @racket[name] is a symbol. A symbol is a value, just like
 
 @; --------------------------------------------------
              
-@section[#:tag "beginner-pre-defined"]{Pre-defined Functions}
+@section[#:tag "beginner-pre-defined"]{预定义函数}
 
-The remaining subsections list those functions that are built into the
-programming language. All other functions are imported from a teachpack or
-must be defined in the program. 
+后续小节列出了编程语言中内置的那些函数。所有其他函数要么从教学包中导入，要么必须在程序中定义。
 
 @(require (submod lang/htdp-beginner procedures))
 @(render-sections (docs) #'here "htdp-beginner")
