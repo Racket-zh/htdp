@@ -95,24 +95,24 @@
   ;; ===> 
   (make-splice
    (list
-    @section[#:tag (string-append section-prefix " Pre-Defined Variables")]{Pre-defined Variables}
+    @section[#:tag (string-append section-prefix " Pre-Defined Variables")]{预定义变量}
 
     @defthing[empty empty?]{
-      The empty list.}
+      空表。}
 
    @defthing[true boolean?]{
-      The @code{#true} value.}
+      @code{#true}值。}
 
    @defthing[false boolean?]{
-      The @code{#false} value.}
+      @code{#false}值。}
 
-    @section[#:tag (string-append section-prefix " Template Variables")]{Template Variables}
+    @section[#:tag (string-append section-prefix " Template Variables")]{模板变量}
     @; MF: I tried abstracting but I failed
-    @defidform[..2]{A placeholder for indicating that a definition is a template.}
-    @defidform[..3]{A placeholder for indicating that a definition is a template.}
-    @defidform[..4]{A placeholder for indicating that a definition is a template.}
-    @defidform[..5]{A placeholder for indicating that a definition is a template.}
-    @defidform[..6]{A placeholder for indicating that a definition is a template.}
+    @defidform[..2]{表明定义是模版的占位符。}
+    @defidform[..3]{表明定义是模版的占位符。}
+    @defidform[..4]{表明定义是模版的占位符。}
+    @defidform[..5]{表明定义是模版的占位符。}
+    @defidform[..6]{表明定义是模版的占位符。}
     )))
 
 ;; ----------------------------------------
@@ -127,20 +127,13 @@
    @defform*[#:id [define define-id]
              [(define (name variable variable ...) expression)]]{
 
-   Defines a function named @racket[name]. The @racket[expression] is the body
-   of the function. When the function is called,
-   the values of the arguments are inserted into the body in place of the
-   @racket[variable]s. The function returns the value of that new expression.
+   定义名为@racket[name]的函数。@racket[expression]为函数体。调用函数时，实际参数值会替换函数体中的@racket[variable]们。新表达式的值就是函数的返回值。
 
-   The function name's cannot be the same as that of another function or
-   variable.}
+   函数名不能与其他函数或变量相同。}
 
    @defform/none[(@#,define-elem name expression)]{
 
-   Defines a variable called @racket[name] with the the value of
-   @racket[expression]. The variable name's cannot be the same as that of
-   another function or variable, and @racket[name] itself must not appear in
-   @racket[expression].}))
+   定义名为@racket[name]的变量，其值为@racket[expression]的值。变量名不能与其他函数或变量相同，而且@racket[name]自身也不能出现在@racket[expression]中。}))
 
 ;; ----------------------------------------
 
@@ -152,11 +145,9 @@
   (list
    @defform/none[(#,define-elem name (#,lambda-elem (variable variable ...) expression))]{
 
-   An alternate way on defining functions. The @racket[name] is the name of
-   the function, which cannot be the same as that of another function or
-   variable. 
+   另一种定义函数的方法。@racket[name]是函数名，它不能与其他函数或变量相同。 
 
-   A @defidform/inline[#,lambda-id] cannot be used outside of this alternate syntax.}))
+   除了这种语法之外，不能使用@defidform/inline[#,lambda-id]。}))
 
 ;; ----------------------------------------
 
@@ -221,27 +212,18 @@
   @defform*[#:id [define-struct define-struct-id]
             [(define-struct structure-name (field-name ...))]]{
 
-   Defines a new structure called @racket[structure-name]. The structure's fields are
-   named by the @racket[field-name]s. After the @define-struct-elem, the following new
-   functions are available:
+   定义名为@racket[structure-name]的新结构体。结构体的字段名由@racket[field-name]们给定。@define-struct-elem 会定义下列函数：
 
    @itemize[
 
-     @item{@racketidfont{make-}@racket[structure-name] : takes a number of
-           arguments equal to the number of fields in the structure,
-           and creates a new instance of that structure.}
+     @item{@racketidfont{make-}@racket[structure-name] ：读入和结构体字段数一样多的参数，并创建结构体的新实例。}
 
-     @item{@racket[structure-name]@racketidfont{-}@racket[field-name] : takes an
-           instance of the structure and returns the value in the field named by
-           @racket[field-name].}
+     @item{@racket[structure-name]@racketidfont{-}@racket[field-name] ：读入结构体实例，返回名为@racket[field-name]字段的值。}
 
-     @item{@racket[structure-name]@racketidfont{?} : takes any value, and returns
-           @true-elem if the value is an instance of the structure.}
+     @item{@racket[structure-name]@racketidfont{?} ：读入任意值，如果该值是结构体的实例就返回@true-elem 。}
    ]
 
-   The name of the new functions introduced by @define-struct-elem
-   must not be the same as that of other functions or variables,
-   otherwise @define-struct-elem reports an error.
+   由@define-struct-elem 引入的新函数名必须不同与其他函数或变量，否则@define-struct-elem 会报告错误。
 
    @ds-extras}
 
@@ -266,14 +248,9 @@
 
   @(if with-beginner-function-call
        @defform/none[(name expression expression ...)]{
-        Calls the function named @racket[name]. The value of the call is the
-        value of @racket[name]'s body when every one of the function's
-        variables are replaced by the values of the corresponding
-        @racket[expression]s.
+        调用名为@racket[name]的函数。函数调用的返回值是@racket[name]函数体的值，其中每个函数的参数都被替换为对应@racket[expression]的值。
      
-        The function named @racket[name] must defined before it can be called. The
-        number of argument @racket[expression]s must be the same as the number of arguments
-        expected by the function.}
+        名为@racket[name]的函数必须在可以调用之前定义。参数@racket[expression]的数量必须和函数所期望的参数数量一致。}
        @elem[])
 
   @; ----------------------------------------------------------------------
@@ -285,17 +262,15 @@
                           ... 
                           [#,else-elem answer-expression])]]{
 
-    Chooses a clause based on some condition. @racket[cond] finds the first
-    @racket[question-expression] that evaluates to @true-elem, then
-    evaluates the corresponding @racket[answer-expression].
+    根据条件选择子句。@racket[cond]找出第一个计算为@true-elem
+    的@racket[question-expression]，然后计算对应的@racket[answer-expression]。
 
-    If none of the @racket[question-expression]s evaluates to @true-elem,
-    @cond-elem's value is the @racket[answer-expression] of the
-    @else-elem clause. If there is no @else-elem, @cond-elem reports
-    an error. If the result of a @racket[question-expression] is neither
-    @true-elem nor @false-elem, @cond-elem also reports an error.
+    如果没有@racket[question-expression]的计算结果为@true-elem ，那么@cond-elem
+    的值是@else-elem 子句中的@racket[answer-expression]。如果不存在@else-elem
+    子句，@cond-elem 报告错误。如果某个@racket[question-expression]的值既不是@true-elem
+    也不是@false-elem ，@cond-elem 也报告错误。
     
-    @defidform/inline[#,else-id] cannot be used outside of @|cond-elem|.}
+    不能在@|cond-elem|之外使用@defidform/inline[#,else-id]。}
 
   @; ----------------------------------------------------------------------
 
@@ -304,25 +279,25 @@
 		 then-answer-expression
 		 else-answer-expression)]]{
 
-   When the value of the @racket[question-expression] is @true-elem,
-   @if-elem evaluates the @racket[then-answer-expression]. When the test is
-   @false-elem, @if-elem evaluates the @racket[else-answer-expression].
+   如果@racket[question-expression]的值是@true-elem ，@if-elem
+   计算@racket[then-answer-expression]的值。如果测试得到@false-elem
+   ，@if-elem 计算@racket[else-answer-expression]的值。
 
-   If the @racket[question-expression] is neither @true-elem nor
-   @false-elem, @if-elem reports an error.}
+   如果@racket[question-expression]既不是@true-elem 也不是@false-elem
+   ，@if-elem 报告错误。}
 
   @; ----------------------------------------------------------------------
 
   @defform*[#:id [and and-id]
             [(and expression expression expression ...)]]{
 
-    Evaluates to @true-elem if all the @racket[expression]s are
-    @|true-elem|. If any @racket[expression] is @|false-elem|, the @and-elem
-    expression evaluates to @false-elem (and the expressions to the
-    right of that expression are not evaluated.)
+    如果所有@racket[expression]都求值为@|true-elem|，@and-elem
+    表达式求值为@true-elem
+    。如果任何@racket[expression]是@|false-elem|，@and-elem
+    表达式计算为@false-elem （并且此表达式右侧的表达式不会被求值）。
 
-    If any of the expressions evaluate to a value other than @true-elem or
-    @false-elem, @and-elem reports an error.}
+    如果任何一个表达式求值既不是@true-elem 也不是@false-elem
+    ，@and-elem 报告错误。}
 
   @; ----------------------------------------------------------------------
 
@@ -330,21 +305,20 @@
   @defform*[#:id [or or-id]
             [(or expression expression expression ...)]]{
 
-    Evaluates to @true-elem as soon as one of the
-    @racket[expression]s is @true-elem (and the expressions to the right of that
-    expression are not evaluated.) If all of the @racket[expression]s are @|false-elem|,
-    the @or-elem expression evaluates to @|false-elem|.
+    只要一个@racket[expression]求值为@true-elem ，@or-elem
+    表达式就求值为@true-elem
+   （并且此表达式右侧的表达式不会被求值）。如果所有@racket[expression]都是@|false-elem|，@or-elem
+    表达式求值为@|false-elem|。
 
-    If any of the expressions evaluate to a value other than @true-elem or
-    @false-elem, @or-elem reports an error.}
+    如果任何一个表达式求值既不是@true-elem 也不是@false-elem
+    ，@or-elem 报告错误。}
 
   @; ----------------------------------------------------------------------
 
   @defform*[#:id [check-expect check-expect-id]
             [(check-expect expression expected-expression)]]{
 
-   Checks that the first @racket[expression] evaluates to the same value as the
-   @racket[expected-expression].
+   检查第一个@racket[expression]求得的值和@racket[expected-expression]相同。
 
 @;%
 @(begin
@@ -358,32 +332,19 @@
   (* 5/9 (- f 32)))
 ))
 @;%
-A @racket[check-expect] expression must be placed at the top-level of a
- student program. Also it may show up anywhere in the program, including
- ahead of the tested function definition. By placing @racket[check-expect]s
- there, a programmer conveys to a future reader the intention behind the
- program with working examples, thus making it often superfluous to read
- the function definition proper. 
+@racket[check-expect]表达式必须被放在教学语言的顶层。它还可以出现在程序的任何地方，包括被测试函数定义之前。这样放置@racket[check-expect]的话，程序员通过工作示例向未来的阅读者传达程序背后的意图，从而使阅读函数定义变得多余。
 
-It is an error for @racket[expr] or @racket[expected-expr] to produce an
-inexact number or a function value. As for inexact numbers, it is
-@italic{morally} wrong to compare them for plain equality. Instead one
-tests whether they are both within a small interval; see
-@racket[check-within]. As for functions (see Intermediate and up), it is
-provably impossible to compare functions. 
+@racket[expr]或@racket[expected-expr]返回非精确数或函数是一种错误。对非精确数，简单比较它们@italic{原则上}就是错误的。取而代之的做法，测试它们是否在某个很小的区间内；参见@racket[check-within]。至于函数（参见中级及之后的语言），函数的比较是不可操作的。
 }
 
   @defform*[#:id [check-random check-random-id]
             [(check-random expression expected-expression)]]{
 
-   Checks that the first @racket[expression] evaluates to the same value as the
-   @racket[expected-expression].
+   检查第一个@racket[expression]求得的值和@racket[expected-expression]相同。
 
-The form supplies the same random-number generator to both parts. If both
-parts request @racket[random] numbers from the same interval in the same
-order, they receive the same random numbers. 
+@racket[check-random]为其两个部分提供相同的随机数生成器。如果两者以相同的顺序从相同的区间中取@racket[random]数的话，它们会得到相同的随机数。
 
-Here is a simple example of where @racket[check-random] is useful: 
+以下是@racket[check-random]用途的简单示例：
 @;%
 @(begin
 #reader scribble/comment-reader
@@ -392,7 +353,7 @@ Here is a simple example of where @racket[check-random] is useful:
 (define HEIGHT (* 2 WIDTH))
 
 (define-struct player (name x y))
-;; A @italic{Player} is @racket[(make-player String Nat Nat)]
+;; @italic{Player}是@racket[(make-player String Nat Nat)]
 
 ;; String -> Player 
 
@@ -403,9 +364,7 @@ Here is a simple example of where @racket[check-random] is useful:
   (make-player name (random WIDTH) (random HEIGHT)))
 ))
 @;%
-Note how @racket[random] is called on the same numbers in the same order in
- both parts of @racket[check-random]. If the two parts call @racket[random]
-  for different intervals, they are likely to fail: 
+注意这里两个部分以同样的数值、同样的顺序调用@racket[random]。如果两者调用@racket[random]的区间不同，检查应该会失败:
 @;%
 @(begin
 #reader scribble/comment-reader
@@ -422,19 +381,15 @@ Note how @racket[random] is called on the same numbers in the same order in
 ))
 @;%
 
-It is an error for @racket[expr] or @racket[expected-expr] to produce a function
-value or an inexact number; see note on @racket[check-expect] for details.
+@racket[expr]或@racket[expected-expr]返回非精确数或函数是一种错误；详情参见@racket[check-expect]的说明。
 }
 
   @defform*[#:id [check-satisfied check-satisfied-id]
             [(check-satisfied expression predicate)]]{
 
-   Checks that the first @racket[expression] satisfies the named
-   @racket[predicate] (function of one argument).  Recall that
-   ``satisfies'' means ``the function produces @racket[#true] for the given
-   value.''
+   检查第一个@racket[expression]是否满足名为@racket[predicate]的谓词（单参数函数）。回忆一下，``满足''的意思是``函数对输入值返回@racket[#true]。''
 
-Here are simple examples for @racket[check-satisfied]: 
+以下是@racket[check-satisfied]的简单示例：
 @interaction[
 #:eval 
 (mk-eval
@@ -448,14 +403,13 @@ Here are simple examples for @racket[check-satisfied]:
 (check-satisfied 1 even?)
 ]
 
-In general @racket[check-satisfied] empowers program designers to use
-defined functions to formulate test suites: 
+一般来说，@racket[check-satisfied]使程序员可以使用已经定义好的函数来编写测试套件：
 @;%
 @(begin
 #reader scribble/comment-reader
 (racketblock
 ;; [cons Number [List-of Number]] -> Boolean 
-;; a function for testing @racket[htdp-sort]
+;; 测试@racket[htdp-sort]的函数
 
 (check-expect (sorted? (list 1 2 3)) #true)
 (check-expect (sorted? (list 2 1 3)) #false)
@@ -466,7 +420,7 @@ defined functions to formulate test suites:
     [else (and (<= (first l) (second l)) (sorted? (rest l)))]))
 
 ;; [List-of Number] -> [List-of Number]
-;; create a sorted version of the given list of numbers 
+;; 创建输入数值表的排序版本
 
 (check-satisfied (htdp-sort (list 1 2 0 3)) sorted?)
 
@@ -476,9 +430,9 @@ defined functions to formulate test suites:
     [else (insert (first l) (htdp-sort (rest l)))]))
 
 ;; Number [List-of Number] -> [List-of Number]
-;; insert @racket[x] into @racket[l] at proper place 
-;; @bold{assume} @racket[l] is arranged in ascending order 
-;; the result is sorted in the same way 
+;; 将@racket[x]插入[l]中的合适位置上
+;; @bold{假设}@racket[l]按降序排列
+;; 返回值也按降序排列
 (define (insert x l)
   (cond
     [(empty? l) (list x)]
@@ -486,7 +440,7 @@ defined functions to formulate test suites:
 ))
 @;%
 
-And yes, the results of @racket[htdp-sort] satisfy the @racket[sorted?] predicate:
+是的，@racket[htdp-sort] 的返回值满足@racket[sorted?]谓词：
 @interaction[
 #:eval evil 
 (check-satisfied (htdp-sort (list 1 2 0 3)) sorted?)
@@ -496,11 +450,7 @@ And yes, the results of @racket[htdp-sort] satisfy the @racket[sorted?] predicat
   @defform*[#:id [check-within check-within-id]
             [(check-within expression expected-expression delta)]]{
 
-  Checks whether the value of the @racket[expression] expression is
-  structurally equal to the value produced by the
-  @racket[expected-expression] expression; every number in the first
-  expression must be within @racket[delta] of the corresponding number in
-  the second expression.
+  检查@racket[expression]表达式的值是否结构上等同于@racket[expected-expression]表达式返回的值；前一个表达式中所有的数值都必须在后一个表达式对应数值的@racket[delta]范围内。
 
 @;%
 @(begin
@@ -514,9 +464,7 @@ And yes, the results of @racket[htdp-sort] satisfy the @racket[sorted?] predicat
 ))
 @;%
 
-Due to the presence of inexact numbers in nested data, @racket[check-within] is the
-correct choice for testing, and the test succeeds if @racket[delta] is reasonably
-large: 
+鉴于嵌套数据中存在非精确数，@racket[check-within]是正确的测试工具，如果@racket[delta]足够大，测试就会通过：
 @examples[
 #:eval 
 (mk-eval
@@ -531,7 +479,7 @@ large:
 	        (make-roots 3  1.713))
               .1)
 ]
-In contrast, when @racket[delta] is small, the test fails: 
+反之，如果@racket[delta]很小，测试就会失败：
 @examples[
 #:eval 
 (mk-eval
@@ -549,19 +497,17 @@ In contrast, when @racket[delta] is small, the test fails:
               .00001)
 ]
 
-  It is an error for @racket[expressions] or @racket[expected-expression]
-  to produce a function value; see note on @racket[check-expect] for details.
+  @racket[expressions]或@racket[expected-expression]返回函数是一种错误；详情参见@racket[check-expect]的说明。
 
-  If @racket[delta] is not a number, @check-within-elem reports an error.} 
+  如果@racket[delta]不是数值，@check-within-elem 报告错误。} 
 
   @defform*[#:id [check-error check-error-id]
             [(check-error expression expected-error-message)
              (#,check-error-elem expression)]]{
 
-   Checks that the @racket[expression] reports an error, where the error messages
-   matches the value of @racket[expected-error-message], if it is present.
+   检查@racket[expression]报告错误，并且如果有错误信息的话，它符合@racket[expected-error-message]的值。
 
-Here is a typical beginner example that calls for a use of @racket[check-error]: 
+这是一个典型的初级语言中需要用到@racket[check-error]的例子：
 @;%
 @(begin
 #reader scribble/comment-reader
@@ -573,7 +519,7 @@ Here is a typical beginner example that calls for a use of @racket[check-error]:
     ("shriram"  18)))
 
 ;; [List-of [list String Number]] String -> Number 
-;; determine the number associated with @racket[s] in @racket[table] 
+;; 求@racket[table]中对应于@racket[s]的数值
 
 (define (lookup table s)
   (cond
@@ -584,7 +530,7 @@ Here is a typical beginner example that calls for a use of @racket[check-error]:
 ))
 @;%
 
-Consider the following two examples in this context: 
+考虑以下两个例子：
 
 @examples[
 #:eval (mk-eval
@@ -629,15 +575,14 @@ Consider the following two examples in this context:
   @defform*[#:id [check-member-of check-member-of-id]
             [(check-member-of expression expression expression ...)]]{
 
-   Checks that the value of the first @racket[expression] is that of
-   one of the following @racket[expression]s.
+   检查第一个@racket[expression]的值是后面某个@racket[expression]表达式的值。
 
 @;%
 @(begin
 #reader scribble/comment-reader
 (racketblock
 ;; [List-of X] -> X 
-;; pick a random element from the given list @racket[l]
+;; 从输入表@racket[l]中随机选择一个元素
 (define (pick-one l)
   (list-ref l (random (length l))))
 ))
@@ -650,25 +595,21 @@ Consider the following two examples in this context:
 (check-member-of (pick-one '("a" "b" "c")) "a" "b" "c")
 ]
 
-  It is an error for any of @racket[expressions] to produce a function value; see
-  note on @racket[check-expect] for details. 
+  任何@racket[expressions]返回函数都是错误；详情参见@racket[check-expect]的说明。
    }
 
   @defform*[#:id [check-range check-range-id]
             [(check-range expression low-expression high-expression)]]{
 
-   Checks that the value of the first @racket[expression] is a number in
-   between the value of the @racket[low-expression] and the
-   @racket[high-expression], inclusive.
+   检查第一个@racket[expression]的值是位于@racket[low-expression]和@racket[high-expression]值（包含）之间的数值。
 
-A @racket[check-range] form is best used to delimit the possible results of
-functions that compute inexact numbers: 
+@racket[check-range]形式最适合用来给返回非精确数的函数确定范围：
 @;%
 @(begin
 #reader scribble/comment-reader
 (racketblock
 ;; [Real -> Real] Real -> Real 
-;; what is the slope of @racket[f] at @racket[x]?
+;; @racket[f]在@racket[x]的斜率是多少？
 (define (differentiate f x)
   (local ((define epsilon .001)
           (define left (- x epsilon))
@@ -682,44 +623,25 @@ functions that compute inexact numbers:
 ))
 @;%
 
-It is an error for @racket[expression], @racket[low-expression], or
-@racket[high-expression] to produce a function value or an inexact number;
-see note on @racket[check-expect] for details.  }
+@racket[expression]、@racket[low-expression]或@racket[high-expression]返回函数或非精确数是一种错误；详情参见@racket[check-expect]的说明。}
 
   @; ----------------------------------------------------------------------
 
   @defform*[#:id [require require-id]
             [(require string)]]{
 
-   Makes the definitions of the module specified by @racket[string]
-   available in the current module (i.e., the current file), where
-   @racket[string] refers to a file relative to the current file.
+   使由@racket[string]指定的module中的定义在当前module（即文件）中可用，其中@racket[string]指向与相对于当前文件的文件。
 
-   The @racket[string] is constrained in several ways to avoid
-   problems with different path conventions on different platforms: a
-   @litchar{/} is a directory separator, @litchar{.} always means the
-   current directory, @litchar{..} always means the parent directory,
-   path elements can use only @litchar{a} through @litchar{z}
-   (uppercase or lowercase), @litchar{0} through @litchar{9},
-   @litchar{-}, @litchar{_}, and @litchar{.}, and the string cannot be
-   empty or contain a leading or trailing @litchar{/}.}
+   为了避免不同平台上路径的问题，这个@racket[string]受到好几种限制：@litchar{/}是目录之间的分隔符，@litchar{.}永远表示当前目录，@litchar{..}总是表示父目录，路径的元素只能包含@litchar{a}到@litchar{z}（大小写）、@litchar{0}到@litchar{9}、@litchar{-}、@litchar{_}和@litchar{.}，并且该字符串不能为空，也不能在开头或结尾位置包含@litchar{/}。}
 
 
   @defform/none[(#,require-elem module-name)]{
 
-   Accesses a file in an installed library. The library name is an
-   identifier with the same constraints as for a relative-path string
-   (though without the quotes), with the additional constraint that it
-   must not contain a @litchar{.}.}
+   访问已安装库中的文件。这里的库名是个标识符，其约束条件与相对路径字符串相同（尽管不包含引号），此外它不能包含@litchar{.}。}
 
   @defform/none[(#,require-elem (lib string string ...))]{
 
-  Accesses a file in an installed library, making its definitions
-  available in the current module (i.e., the current file). The first
-  @racket[string] names the library file, and the remaining
-  @racket[string]s name the collection (and sub-collection, and so on)
-  where the file is installed. Each string is constrained in the same
-  way as for the @racket[(#,require-elem string)] form.}
+  访问已安装库中的文件，使其定义在当前module（即当前文件）中可用。第一个@racket[string]指定了库文件名，后续@racket[string]指定文件所在的collection（以及子collection等）。每个string都受到和@racket[(#,require-elem string)]中一样的限制。}
 
 
   @deftogether[(
@@ -728,16 +650,10 @@ see note on @racket[check-expect] for details.  }
   @defform/none[#:literals (planet) (#,require-elem (planet id))]{}
   @defform/none[#:literals (planet) (#,require-elem (planet string))]{})]{
 
-  Accesses a library that is distributed on the internet via the
-  @|PLaneT| server, making it definitions available in the current module
-  (i.e., current file).
+  访问在因特网上通过@|PLaneT|服务器分发的库，使其中的定义在当前module（即当前文件）中可用。
 
-  The full grammar for planet requires is given in 
-  @secref["require"
-          #:doc '(lib "scribblings/reference/reference.scrbl")], but
-  the best place to find examples of the syntax is on the
-  @link["http://planet.racket-lang.org"]{the @PLaneT server}, in the
-  description of a specific package.  
+  planet requires的完整语法在@secref["require"
+          #:doc '(lib "scribblings/reference/reference.scrbl")]中给出，但找到语法示例的最佳位置位于@link["http://planet.racket-lang.org"]{@PLaneT 服务器}上特定package的描述中。
 }
 ))
 
@@ -763,11 +679,11 @@ see note on @racket[check-expect] for details.  }
     @defform/none[(#,quote-elem part)]
    )]{
  
-    A quoted name is a symbol. A quoted part is an abbreviation for a nested lists.
+    quote的name就是符号。quote的part是嵌套表的缩写形式。
  
-    Normally, this quotation is written with a @litchar{'}, like
-    @racket['(apple banana)], but it can also be written with
-    @quote-elem, like @racket[(@#,quote-elem (apple banana))].}
+    通常，这种引用由@litchar{'}写出，例如@racket['(apple
+                                      banana)]，但也可以用@quote-elem
+    来写，例如@racket[(@#,quote-elem (apple banana))]。}
  
  
    @deftogether[(
@@ -778,13 +694,11 @@ see note on @racket[check-expect] for details.  }
     @defform/none[(#,quasiquote-elem part)]
    )]{
  
-    Like @quote-elem, but also allows escaping to expression
-    ``unquotes.''
+    类似于@quote-elem ，但支持``unquote''表示跳出表达式。
  
-    Normally, quasi-quotations are written with a backquote,
-    @litchar{`}, like @racket[`(apple ,(+ 1 2))], but they can also be
-    written with @quasiquote-elem, like
-    @racket[(#, @quasiquote-elem (apple ,(+ 1 2)))].}
+    通常，quasiquote由反引号@litchar{`}写出，例如@racket[`(apple
+                                        ,(+ 1 2))]，但也可以用@quasiquote-elem
+    来写，例如@racket[(#, @quasiquote-elem (apple ,(+ 1 2)))]。}
  
  
    @deftogether[(
@@ -793,16 +707,11 @@ see note on @racket[check-expect] for details.  }
              (unquote expression)]
    )]{
  
-    Under a single quasiquote, @racketfont{,}@racket[expression]
-    escapes from the quote to include an evaluated expression whose
-    result is inserted into the abbreviated list.
+    在单个quasiquote中，@racketfont{,}@racket[expression]跳出quote，将表达式计算的结果插入缩写的表中。
  
-    Under multiple quasiquotes, @racketfont{,}@racket[expression] is
-    really the literal @racketfont{,}@racket[expression], decrementing
-    the quasiquote count by one for @racket[expression].
+    在多个quasiquote中，@racketfont{,}@racket[expression]只是文本的@racketfont{,}@racket[expression]，@racket[expression]的quasiquote层数将被减一。
  
-    Normally, an unquote is written with @litchar{,}, but it can also be
-    written with @|unquote-elem|.}
+    通常，unquote由@litchar{,}写出，但也可以用@|unquote-elem|来写。}
  
  
    @deftogether[(
@@ -811,15 +720,11 @@ see note on @racket[check-expect] for details.  }
              (unquote-splicing expression)]
    )]{
  
-    Under a single quasiquote, @racketfont[",@"]@racket[expression]
-    escapes from the quote to include an evaluated expression whose
-    result is a list to splice into the abbreviated list.
+    在单个quasiquote中，@racketfont[",@"]@racket[expression]跳出quote，表达式计算的结果应当是表，它会被拼接入所写的表中。
  
-    Under multiple quasiquotes, a splicing unquote is like an unquote;
-    that is, it decrements the quasiquote count by one.
+    在多个quasiquote中，拼接的unquote就和unquote一样；即，将quasiquote的层数减一。
  
-    Normally, a splicing unquote is written with @litchar{,}, but it
-    can also be written with @|unquote-splicing-elem|.}
+    通常，拼接的unquote由@litchar{,}写出，单也可以用@|unquote-splicing-elem|来写。}
 
     ))
 
@@ -856,30 +761,23 @@ see note on @racket[check-expect] for details.  }
   @defform[#:id [local local-id]
            (local [definition ...] expression)]{
 
-   Groups related definitions for use in @racket[expression]. Each
-   @racket[definition] can be either a @define-elem or a
-   @|define-struct-elem|. 
+   将相关的定义组合提供给@racket[expression]使用。单个的@racket[definition]可以是@define-elem
+   ，也可以是@|define-struct-elem|。
 
-   When evaluating @local-elem, each @racket[definition] is evaluated
-   in order, and finally the body @racket[expression] is
-   evaluated. Only the expressions within the @local-elem (including
-   the right-hand-sides of the @racket[definition]s and the
-   @racket[expression]) may refer to the names defined by the
-   @racket[definition]s. If a name defined in the @local-elem is the
-   same as a top-level binding, the inner one ``shadows'' the outer
-   one. That is, inside the @local-elem, any references to that name
-   refer to the inner one.}
+   计算@local-elem
+   时，按顺序计算每个@racket[definition]，最后计算主体中的@racket[expression]。只有@local-elem
+   内的表达式（包括@racket[definition]们的右侧、以及@racket[expression]）可以引用@racket[definition]们定义的名称。如果某个@local-elem
+   中的定义和另一个全局绑定同名，内层的名称会遮盖掉全局绑定。也就是说，在@local-elem
+   内，所用对该名称的引用全都指向内层定义。}
 
   @; ----------------------------------------------------------------------
 
   @defform[#:id [letrec letrec-id]
            (letrec ([name expr-for-let] ...) expression)]{
 
-   Like @local-elem, but with a simpler syntax. Each @racket[name]
-   defines a variable (or a function) with the value of the
-   corresponding @racket[expr-for-let].  If @racket[expr-for-let] is a
-   @lambda-elem, @letrec-elem defines a function, otherwise it
-   defines a variable.}
+   类似于@local-elem
+   ，单语法更简单。每个@racket[name]用对应@racket[expr-for-let]的值定义变量（或函数）。如果@racket[expr-for-let]是@lambda-elem
+   ，@letrec-elem 就定义函数，否则就定义变量。}
 
 
   @defform[#:id [let* let*-id]
@@ -893,20 +791,16 @@ see note on @racket[check-expect] for details.  }
   @defform[#:id [let let-id]
            (let ([name expr-for-let] ...) expression)]{
 
-   Like @letrec-elem, but the defined @racket[name]s can be used only
-   in the last @racket[expression], not the @racket[expr-for-let]s
-   next to the @racket[name]s.}
+   类似于@letrec-elem
+   ，但定义的@racket[name]们只能在最后的@racket[expression]中使用，而不能在@racket[name]们右侧的@racket[expr-for-let]们中使用。}
 
   @; ----------------------------------------------------------------------
 
   @defform[#:id [time time-id]
             (time expression)]{
 
-   Measures the time taken to evaluate @racket[expression]. After
-   evaluating @racket[expression], @racket[time] prints out the time
-   taken by the evaluation (including real time, time taken by the
-   CPU, and the time spent collecting free memory). The value of
-   @time-elem is the same as that of @racket[expression].}))
+   测量计算@racket[expression]所需的时间。完成对@racket[expression]的求值后，@racket[time]会打印出计算所用的时间（包括实际时间、CPU用时以及收集可用内存所花费的时间）。@time-elem
+   的值是@racket[expression]的值。}))
 
 ;; ----------------------------------------
 
