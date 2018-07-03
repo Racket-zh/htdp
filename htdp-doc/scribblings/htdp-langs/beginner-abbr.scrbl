@@ -2,7 +2,7 @@
 
 @(require "common.rkt" "std-grammar.rkt" "prim-ops.rkt" (for-label lang/htdp-beginner-abbr))
 
-@title[#:tag "beginner-abbr"]{Beginning Student with List Abbreviations}
+@title[#:tag "beginner-abbr"]{初级+缩写的表}
 
 @section-index["BSL+"]
 
@@ -50,17 +50,16 @@
 
 @; ----------------------------------------
 
-@section[#:tag "beginner-abbr-syntax"]{Syntaxes for Beginning Student with List Abbreviations}
+@section[#:tag "beginner-abbr-syntax"]{初级+缩写的表的语法}
 
 @(beginner-abbr-forms quote quasiquote unquote unquote-splicing)
 
 
 
 @; ----------------------------------------------------------------------
-@section[#:tag "beginner-abbr-common-syntax"]{Common Syntaxes}
+@section[#:tag "beginner-abbr-common-syntax"]{通用的语法}
 
-The following syntaxes behave the same in the @emph{Beginner with List
-Abbreviations} level as they did in the @secref["beginner"] level.
+以下@emph{初级+缩写的表}的语法在和@secref["beginner"]中的相同。
 
 @(define-forms/normal define)
 @(define-form/explicit-lambda define lambda)
@@ -90,11 +89,9 @@ Abbreviations} level as they did in the @secref["beginner"] level.
 
 @; ----------------------------------------
 
-@section[#:tag "beginner-abbr-pre-defined"]{Pre-defined Functions}
+@section[#:tag "beginner-abbr-pre-defined"]{预定义函数}
 
-The remaining subsections list those functions that are built into the
-programming language. All other functions are imported from a teachpack or
-must be defined in the program. 
+后续小节列出了编程语言中内置的那些函数。所有其他函数要么从教学包中导入，要么必须在程序中定义。
 
 @(require (submod lang/htdp-beginner-abbr procedures))
 @(render-sections (docs) #'here "htdp-beginner-abbr")
