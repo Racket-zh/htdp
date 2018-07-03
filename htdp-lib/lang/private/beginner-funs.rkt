@@ -552,7 +552,7 @@
  判断某个值是否为空表。
  @interaction[#:eval (bsl) (null? '()) (null? 42)]
 }
-  @defthing[null list]{Another name for the empty list
+  @defthing[null list]{空表的另一个名称
  @interaction[#:eval (bsl) null]
 }
   @defproc[((beginner-car car) [x cons?]) any/c]{
