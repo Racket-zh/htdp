@@ -2,15 +2,13 @@
 @(require "common.rkt" "std-grammar.rkt" "prim-ops.rkt"
           (for-label lang/htdp-intermediate-lambda))
 
-@title[#:tag "intermediate-lam"]{Intermediate Student with Lambda}
+@title[#:tag "intermediate-lam"]{中级+lambda}
 
 @section-index["ISL+"]
 
 @declare-exporting[lang/htdp-intermediate-lambda]
 
-The grammar notation uses the notation @racket[X #, @dots] (bold dots) to indicate that
-@racket[X] may occur an arbitrary number of times (zero, one, or more). The 
-grammar also provides @racket[...] as an identifier to be used in templates. 
+@grammar
 
 @racketgrammar*+qq[
 #:literals (define define-struct lambda λ cond else if and or require lib planet
@@ -56,31 +54,24 @@ grammar also provides @racket[...] as an identifier to be used in templates.
 
 @; ----------------------------------------------------------------------
 
-@section[#:tag "intm-w-lambda-syntax"]{Syntax for Intermediate with Lambda}
+@section[#:tag "intm-w-lambda-syntax"]{中级+lambda的语法}
 
 
 @defform[(lambda (variable variable #, @dots) expression)]{
 
-Creates a function that takes as many arguments as given @racket[variable]s,
-and whose body is @racket[expression].}
+创建函数，该函数接受与@racket[variable]数量一样多的参数，函数体为@racket[expression]。}
 
 @defform[(λ (variable variable #, @dots) expression)]{
 
-The Greek letter @racket[λ] is a synonym for @racket[lambda].}
+希腊字母@racket[λ]是@racket[lambda]的同义词。}
 
 
 
 @defform/none[(expression expression expression #, @dots)]{
 
-Calls the function that results from evaluating the first
-@racket[expression]. The value of the call is the value of function's body when
-every instance of @racket[name]'s variables are replaced by the values of the
-corresponding @racket[expression]s.
+调用对第一个@racket[expression]求值得到的函数。函数调用的值是函数体的值，其中每个@racket[name]变量的实例被替换为对应@racket[expression]的值。
 
-The function being called must come from either a definition appearing before the
-function call, or from a @racket[lambda] expression. The number of argument
-@racket[expression]s must be the same as the number of arguments expected by
-the function.}
+被调用的函数必须来自函数调用之前出现过的定义，或来自@racket[lambda]表达式。参数@racket[expression]的数量必须与函数预期的参数数量相同。}
 
 
 
@@ -97,10 +88,9 @@ the function.}
 
 @; ----------------------------------------------------------------------
 
-@section[#:tag "intm-w-lambda-common-syntax"]{Common Syntaxes}
+@section[#:tag "intm-w-lambda-common-syntax"]{通用的语法}
 
-The following syntaxes behave the same in the @emph{Intermediate with Lambda}
-level as they did in the @secref["intermediate"] level.
+以下语法在@emph{中级+lambda}中的行为和@secref["intermediate"]中相同。
 
 @(define-forms/normal define)
 
@@ -127,11 +117,9 @@ level as they did in the @secref["intermediate"] level.
              true false
              #:with-beginner-function-call #f)
 
-@section[#:tag "intm-w-lambda-pre-defined"]{Pre-defined Functions}
+@section[#:tag "intm-w-lambda-pre-defined"]{预定义函数}
 
-The remaining subsections list those functions that are built into the
-programming language. All other functions are imported from a teachpack or
-must be defined in the program. 
+后续小节列出了编程语言中内置的函数。所有其他函数要么从教学包中导入，要么必须在程序中定义。
 
 @(require (submod lang/htdp-intermediate-lambda procedures))
 @(render-sections (docs) #'here "htdp-intermediate-lambda")

@@ -59,7 +59,7 @@
 @; ----------------------------------------------------------------------
 @section[#:tag "beginner-abbr-common-syntax"]{通用的语法}
 
-以下@emph{初级+缩写的表}的语法在和@secref["beginner"]中的相同。
+以下语法在@emph{初级+缩写的表}中的行为和@secref["beginner"]中相同。
 
 @(define-forms/normal define)
 @(define-form/explicit-lambda define lambda)
@@ -91,7 +91,7 @@
 
 @section[#:tag "beginner-abbr-pre-defined"]{预定义函数}
 
-后续小节列出了编程语言中内置的那些函数。所有其他函数要么从教学包中导入，要么必须在程序中定义。
+后续小节列出了编程语言中内置的函数。所有其他函数要么从教学包中导入，要么必须在程序中定义。
 
 @(require (submod lang/htdp-beginner-abbr procedures))
 @(render-sections (docs) #'here "htdp-beginner-abbr")

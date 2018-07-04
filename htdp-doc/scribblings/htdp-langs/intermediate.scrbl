@@ -3,15 +3,13 @@
           (for-label lang/htdp-intermediate))
 
 
-@title[#:tag "intermediate"]{Intermediate Student}
+@title[#:tag "intermediate"]{中级}
 
 @section-index["ISL"]
 
 @declare-exporting[lang/htdp-intermediate]
 
-The grammar notation uses the notation @racket[X #, @dots] (bold dots) to indicate that
-@racket[X] may occur an arbitrary number of times (zero, one, or more). The 
-grammar also provides @racket[...] as an identifier to be used in templates. 
+@grammar
 
 @racketgrammar*+qq[
 #:literals (define define-struct lambda cond else if and or require lib planet
@@ -55,7 +53,7 @@ grammar also provides @racket[...] as an identifier to be used in templates.
 
 @; ----------------------------------------------------------------------
 
-@section[#:tag "intermediate-syntax"]{Syntax for Intermediate}
+@section[#:tag "intermediate-syntax"]{中级的语法}
 
 
 @(intermediate-forms lambda
@@ -69,10 +67,9 @@ grammar also provides @racket[...] as an identifier to be used in templates.
 
 @; ----------------------------------------------------------------------
 
-@section[#:tag "intermediate-common-syntax"]{Common Syntaxes}
+@section[#:tag "intermediate-common-syntax"]{通用的语法}
 
-The following syntaxes behave the same in the @emph{Intermediate} level as they
-did in the @secref["beginner-abbr"] level.
+以下语法在@emph{中级}中的行为和@secref["beginner-abbr"]中相同。
 
 @(beginner-abbr-forms quote quasiquote unquote unquote-splicing)
 
@@ -104,11 +101,9 @@ did in the @secref["beginner-abbr"] level.
 
 
 
-@section[#:tag "intermediate-pre-defined" ]{Pre-defined Functions}
+@section[#:tag "intermediate-pre-defined" ]{预定义函数}
 
-The remaining subsections list those functions that are built into the
-programming language. All other functions are imported from a teachpack or
-must be defined in the program. 
+后续小节列出了编程语言中内置的函数。所有其他函数要么从教学包中导入，要么必须在程序中定义。
 
 @(require (submod lang/htdp-intermediate procedures))
 @(render-sections (docs) #'here "htdp-intermediate")
