@@ -52,11 +52,9 @@
        (set! asl (lambda () *bsl))
        *bsl))
    
-   ("Numbers: Integers, Rationals, Reals, Complex, Exacts, Inexacts"
+   ("数值：整数、有理数、实数、复数、精确数、非精确数"
     @defproc[(random [x natural]) natural]{
-    Generates a random number. If given one argument @racket[random] returns a natural number
-    less than the given natural. In ASL, if given no arguments, @racket[random] generates a
-    random inexact number between 0.0 and 1.0 exclusive.
+    生成随机数。如果传入一个参数@racket[random]返回小于给定自然数的自然数。在高级语言中，如果没有传入参数，@racket[random]会给出0.0到1.0之间的随机非精确数。
     @interaction[#:eval (asl) (random)]
     @interaction[#:eval (asl) (random)]
     @interaction[#:eval (asl) (random 42)]
@@ -64,49 +62,48 @@
     } 
     )
 
-   ("Reading and Printing"
+   ("输入输出"
     @defproc[(with-input-from-file [f string] [p (-> any)]) any]{
-    Opens the named input file @racket[f] and allows @racket[p] to read from it.
+    打开名为@racket[f]的输入文件，允许@racket[p]从中读入输入。
     } 
     @defproc[(with-output-to-file [f string] [p (-> any)]) any]{
-    Opens the named input file @racket[f] and allows @racket[p] to write to it.
+    打开名为@racket[f]的输出文件，允许@racket[p]向其写输出。
     } 
     @defproc[(with-input-from-string [s string] [p (-> any)]) any]{
-    Turns @racket[s] into input for @racket[read] operations in @racket[p].
+    将@racket[s]转换为@racket[p]中@racket[read]运算的输入。
     @interaction[#:eval (asl)
       (with-input-from-string "hello" read)
       (string-length (symbol->string (with-input-from-string "hello" read)))]
     } 
     @defproc[(with-output-to-string [p (-> any)]) any]{
-    Produces a string from all write/display/print operations in @racket[p].
+    用@racket[p]中所有write/display/print运算生成字符串。
     @interaction[#:eval (asl)
       (with-output-to-string (lambda () (display 10)))]
     } 
     
     @defproc[(print [x any]) void]{
-    Prints the argument as a value.
+    打印参数的值。
     @interaction[#:eval (asl)
       (print 10)
       (print "hello")
       (print 'hello)]
     } 
     @defproc[(display [x any]) void]{
-    Prints the argument to stdout (without quotes on symbols and strings, etc.).
+    将参数打印到stdout（对符号和字符串等不使用引号）。
     @interaction[#:eval (asl)
       (display 10)
       (display "hello")
       (display 'hello)]
     } 
     @defproc[(write [x any]) void]{
-    Prints the argument to stdout (in a traditional style that is somewhere 
-    between @racket[print] and @racket[display]).
+    将参数打印到stdout（采用介于@racket[print]和@racket[display]之间的传统样式）。
     @interaction[#:eval (asl)
       (write 10)
       (write "hello")
       (write 'hello)]
     } 
     @defproc[((pp pretty-print) [x any]) void]{
-    Pretty prints S-expressions (like @racket[write]). 
+    用优美格式打印S表达式（类似于@racket[write]）。
     @interaction[
  #:eval (asl)
  (pretty-print '((1 2 3) ((a) ("hello world" #true) (((false "good bye"))))))
@@ -115,211 +112,195 @@
     }
 
     @defproc[(printf [f string] [x any] ...) void]{
-    Formats the rest of the arguments according to the first argument and print it. } 
+    根据第一个参数格式化其余参数并打印之。} 
 
     @defproc[(newline) void]{
-    Prints a newline.} 
+    打印换行符。} 
 
     @defproc[(read) sexp]{
-    Reads input from the user.}) 
+    读取用户的输入。}) 
    
-   ("Lists"
+   ("链表"
 ;    @defproc[((advanced-list? list?) [x any]) boolean]{
 ;    Determines whether some value is a list. 
 ;    In ASL, @racket[list?] also deals with cyclic lists. 
 ;    } 
     @defproc[((advanced-list* list*) [x any] ... [l (listof any)]) (listof any)]{
-    Constructs a list by adding multiple items to a list.
-    In ASL, @racket[list*] also deals with cyclic lists. 
+    向表（前部）添加多个项，构造（新）表。
+    在高级语言中，@racket[list*]也能处理带循环的链表。 
     } 
     @defproc[((advanced-cons cons) [x X] [l (listof X)]) (listof X)]{
-    Constructs a list.
-    In ASL, @racket[cons] creates a mutable list. 
+    构造链表。
+    在高级语言中，@racket[cons]创建可变的表。 
     } 
     @defproc[((advanced-append append) [l (listof any)] ...) (listof any)]{
-    Creates a single list from several.
-    In ASL, @racket[list*] also deals with cyclic lists. 
+    用多个表创建表。
+    在高级语言中，@racket[list*]也能处理带循环的表。
     } 
 )
    
-   ("Misc"
+   ("杂项"
     @defproc[(gensym) symbol?]{
-    Generates a new symbol, different from all symbols in the program.
+    生成与程序中所有符号都不同的新符号。
     @interaction[#:eval (asl) (gensym)]
     } 
     @defproc[(sleep [sec positive-num]) void]{
-    Causes the program to sleep for the given number of seconds.
+    让程序休眠给定的秒数。
     } 
     @defproc[(current-milliseconds) exact-integer]{
-    Returns the current “time” in fixnum milliseconds (possibly negative).
+    返回当前“时间”，单位为固定长度数表示的毫秒（可能为负数）。
     @interaction[#:eval (asl) (current-milliseconds)]
     } 
     @defproc[(force [v any]) any]{
-    Finds the delayed value; see also delay.
+    求出被延迟的值；另见delay。
     } 
     @defproc[(promise? [x any]) boolean?]{
-    Determines if a value is delayed.
+    判断值是否被延迟。
     } 
     @defproc[(void) void?]{
-    Produces a void value.
+    返回空值。
     @interaction[#:eval (asl) (void)]
     } 
     @defproc[(void? [x any]) boolean?]{
-    Determines if a value is void.
+    判断值是否为空值void。
     @interaction[#:eval (asl) (void? (void)) (void? 42)]
     }) 
    
-   ("Posns"
+   ("Posn"
     @defproc[(set-posn-x! [p posn] [x any]) void?]{
-    Updates the x component of a posn.
+    更新posn的x字段。
     @interaction[#:eval (asl) p (set-posn-x! p 678) p]
     } 
     @defproc[(set-posn-y! [p posn] [x any]) void]{
-    Updates the y component of a posn.
+    更新posn的y字段。
     @interaction[#:eval (asl) q (set-posn-y! q 678) q]
     }) 
    
-   ("Vectors"
+   ("向量"
     @defproc[(vector [x X] ...) (vector X ...)]{
-    Constructs a vector from the given values.
+    用输入值构造向量。
     @interaction[#:eval (asl) (vector 1 2 3 -1 -2 -3)]
     } 
     @defproc[(make-vector [n number] [x X]) (vectorof X)]{
-    Constructs a vector of @racket[n] copies of @racket[x].
+    构造包含@racket[n]个@racket[x]的向量。
     @interaction[#:eval (asl) (make-vector 5 0)]
     } 
     @defproc[(build-vector [n nat] [f (nat -> X)]) (vectorof X)]{
-    Constructs a vector by applying @racket[f] to the numbers @racket[0] through
-    @racket[(- n 1)].
+    通过将@racket[f]应用于从@racket[0]到@racket[(- n 1)]的数来构造向量。
     @interaction[#:eval (asl) (build-vector 5 add1)]
     }
     @defproc[(vector-ref [v (vector X)] [n nat]) X]{
-    Extracts the @racket[n]th element from @racket[v].
+    提取@racket[v]的第@racket[n]个元素。
     @interaction[#:eval (asl) v (vector-ref v 3)]
     } 
     @defproc[(vector-length [v (vector X)]) nat]{
-    Determines the length of @racket[v].
+    求@racket[v]的长度。
     @interaction[#:eval (asl) v (vector-length v)]
     } 
     @defproc[(vector-set! [v (vectorof X)][n nat][x X]) void]{
-    Updates @racket[v] at position @racket[n] to be @racket[x].
+    将@racket[v]的@racket[n]位置更新为@racket[x]。
     @interaction[#:eval (asl) v (vector-set! v 3 77) v]
     } 
     @defproc[(vector->list [v (vectorof X)]) (listof X)]{
-    Transforms @racket[v] into a list. 
+    将@racket[v]转换为链表。
     @interaction[#:eval (asl) (vector->list (vector 'a 'b 'c))]
     } 
     @defproc[(list->vector [l (listof X)]) (vectorof X)]{
-    Transforms @racket[l] into a vector. 
+    将@racket[l]转换为向量。
     @interaction[#:eval (asl) (list->vector (list "hello" "world" "good" "bye"))]
     } 
     @defproc[(vector? [x any]) boolean]{
-    Determines if a value is a vector.
+    判断值是否为向量。
     @interaction[#:eval (asl) v (vector? v) (vector? 42)]
     }) 
    
-   ("Boxes"
+   ("箱子"
     @defproc[(box [x any/c]) box?]{
-    Constructs a box.
+    构造箱子。
     @interaction[#:eval (asl) (box 42)]
     } 
     @defproc[(unbox [b box?]) any]{
-    Extracts the boxed value.
+    提取箱子中的值。
     @interaction[#:eval (asl) b (unbox b)]
     } 
     @defproc[(set-box! [b box?][x any/c]) void]{
-    Updates a box.
+    更新箱子中的值。
     @interaction[#:eval (asl) b (set-box! b 31) b]
     } 
     @defproc[(box? [x any/c]) boolean?]{
-    Determines if a value is a box.
+    判断值是否是箱子。
     @interaction[#:eval (asl) b (box? b) (box? 42)]
     }) 
    
-   ("Hash Tables"
+   ("哈希表"
     @defproc[((advanced-make-hash make-hash)) (hash X Y)]{
-    Constructs a mutable hash table from an optional list of mappings that
-    uses equal? for comparisons.
+    用可选的输入——映射的表——创建可变哈希表，其中使用equal?进行比较。
     @interaction[#:eval (asl)
       (make-hash)
       (make-hash '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[((advanced-make-hasheq make-hasheq)) (hash X Y)]{
-    Constructs a mutable hash table from an optional list of mappings that
-    uses eq? for comparisons.
+    用可选的输入——映射的表——创建可变哈希表，其中使用eq?进行比较。
     @interaction[#:eval (asl)
       (make-hasheq)
       (make-hasheq '((b 69) (e 61) (i 999)))
       ] 
     } 
     @defproc[((advanced-make-hasheqv make-hasheqv)) (hash X Y)]{
-    Constructs a mutable hash table from an optional list of mappings that
-    uses eqv? for comparisons.
+    用可选的输入——映射的表——创建可变哈希表，其中使用eqv?进行比较。
     @interaction[#:eval (asl)
       (make-hasheqv)
       (make-hasheqv '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[((advanced-make-immutable-hash make-immutable-hash)) (hash X Y)]{
-    Constructs an immutable hash table from an optional list of mappings
-    that uses equal? for comparisons.
+    用可选的输入——映射的表——创建不可变哈希表，其中使用equal?进行比较。
     @interaction[#:eval (asl)
       (make-immutable-hash)
       (make-immutable-hash '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[((advanced-make-immutable-hasheq make-immutable-hasheq)) (hash X Y)]{
-    Constructs an immutable hash table from an optional list of mappings
-    that uses eq? for comparisons.
+    用可选的输入——映射的表——创建不可变哈希表，其中使用eq?进行比较。
     @interaction[#:eval (asl)
       (make-immutable-hasheq)
       (make-immutable-hasheq '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[((advanced-make-immutable-hasheqv make-immutable-hasheqv)) (hash X Y)]{
-    Constructs an immutable hash table from an optional list of mappings
-    that uses eqv? for comparisons.
+    用可选的输入——映射的表——创建不可变哈希表，其中使用eqv?进行比较。
     @interaction[#:eval (asl)
       (make-immutable-hasheqv)
       (make-immutable-hasheqv '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[(hash-set! [h (hash X Y)] [k X] [v Y]) void?]{
-    Updates a mutable hash table with a new mapping.
+    用新映射更新可变哈希表。
     @interaction[#:eval (asl) hsh (hash-set! hsh 'a 23) hsh]
     } 
     @defproc[(hash-set  [h (hash X Y)] [k X] [v Y]) (hash X Y)]{
-    Constructs an immutable hash table with one new mapping from an
-    existing immutable hash table.
+    构造新的不可变哈希表，在原有不可变哈希表中加入新映射。
     @interaction[#:eval (asl) (hash-set ish 'a 23)]
     } 
     @defproc[(hash-ref  [h (hash X Y)] [k X]) Y]{
-    Extracts the value associated with a key from a hash table; the three
-    ; argument case allows a default value or default value computation.
+    从哈希表中提取键值所关联的值；第三个可选参数可以提供默认值，或者计算默认值。
     @interaction[#:eval (asl) hsh (hash-ref hsh 'b)]
     } 
     @defproc[(hash-ref! [h (hash X Y)] [k X] [v Y]) Y]{
-    Extracts the value associated with a key from a mutable hash table; if
-    ; the key does not have an mapping, the third argument is used as the
-    ; value (or used to compute the value) and is added to the hash table
-    ; associated with the key.
+    从哈希表中提取键值所关联的值；如果键值没有被关联，使用第三个参数的值（或其计算所得的值），并将此值插入哈希表中（关联到给定的键值）。
     @interaction[#:eval (asl) hsh (hash-ref! hsh 'd 99) hsh]
     } 
     @defproc[(hash-update! [h (hash X Y)] [k X] [f (Y -> Y)]) void?]{
-    Composes hash-ref and hash-set! to update an existing mapping; the
-    ; third argument is used to compute the new mapping value; the fourth
-    ; argument is used as the third argument to hash-ref.
+    组合hash-ref和hash-set!更新现有的映射；第三个参数被用来计算新的映射值；第四个参数是提供给hash-ref的第三个参数。
     @interaction[#:eval (asl) hsh (hash-update! hsh 'b (lambda (old-b) (+ old-b 1))) hsh]    
     } 
     @defproc[(hash-update  [h (hash X Y)] [k X] [f (Y -> Y)]) (hash X Y)]{
-    Composes hash-ref and hash-set to update an existing mapping; the third
-    ; argument is used to compute the new mapping value; the fourth
-    ; argument is used as the third argument to hash-ref.
+    组合hash-ref和hash-set更新现有的映射；第三个参数被用来计算新的映射值；第四个参数是提供给hash-ref的第三个参数。
     @interaction[#:eval (asl) (hash-update ish 'b (lambda (old-b) (+ old-b 1)))]        
     } 
     @defproc[(hash-has-key? [h (hash X Y)] [x X]) boolean]{
-    Determines if a key is associated with a value in a hash table.
+    判断键值是否在哈希表中关联于某个映射值。
     @interaction[#:eval (asl)
       ish
       (hash-has-key? ish 'b)
@@ -327,51 +308,49 @@
       (hash-has-key? hsh 'd)]
     } 
     @defproc[(hash-remove! [h (hash X Y)] [x X]) void]{
-    Removes an mapping from a mutable hash table.
+    从可变哈希表中删除映射。
     @interaction[#:eval (asl)
       hsh
       (hash-remove! hsh 'r)
       hsh]
     } 
     @defproc[(hash-remove [h (hash X Y)] [k X]) (hash X Y)]{
-    Constructs an immutable hash table with one less mapping than an
-    existing immutable hash table.
+    构造新的不可变的哈希表，在原有不可变哈希表中减去一个映射。
     @interaction[#:eval (asl)
       ish
       (hash-remove ish 'b)]
     } 
     @defproc[(hash-map [h (hash X Y)] [f (X Y -> Z)]) (listof Z)]{
-    Constructs a new list by applying a function to each mapping of a hash
-    table.
+    将函数应用于哈希表中的每个映射对，构造新的链表。
     @interaction[#:eval (asl)
       ish
       (hash-map ish list)]
     } 
     @defproc[(hash-for-each [h (hash X Y)] [f (X Y -> any)]) void?]{
-    Applies a function to each mapping of a hash table for effect only.
+    将函数应用于哈希表中的每个映射对，仅取效果。
     @interaction[#:eval (asl)
       hsh
       (hash-for-each hsh (lambda (ky vl) (hash-set! hsh ky (+ vl 1))))
       hsh]
     } 
     @defproc[(hash-count [h hash]) integer]{
-    Determines the number of keys mapped by a hash table.
+    求哈希表中映射键值的数量。
     @interaction[#:eval (asl)
       ish
       (hash-count ish)]
     } 
     @defproc[(hash-copy [h hash]) hash]{
-    Copies a hash table.
+    复制哈希表。
     } 
     @defproc[(hash? [x any]) boolean]{
-    Determines if a value is a hash table.
+    判断值是否为哈希表。
     @interaction[#:eval (asl)
       ish
       (hash? ish)
       (hash? 42)]
     } 
     @defproc[(hash-equal? [h hash?]) boolean]{
-    Determines if a hash table uses equal? for comparisons.
+    判断哈希表是否使用equal?进行比较。
     @interaction[#:eval (asl)
       ish
       (hash-equal? ish)
@@ -380,7 +359,7 @@
       ]
     } 
     @defproc[(hash-eq? [h hash]) boolean]{
-    Determines if a hash table uses eq? for comparisons.
+    判断哈希表是否使用eq?进行比较。
     @interaction[#:eval (asl)
       hsh
       (hash-eq? hsh)
@@ -389,7 +368,7 @@
       ]
     } 
     @defproc[(hash-eqv? [h hash]) boolean]{
-    Determines if a hash table uses eqv? for comparisons.
+    判断哈希表是否使用eqv?进行比较。
     @interaction[#:eval (asl)
       heq
       (hash-eqv? heq)

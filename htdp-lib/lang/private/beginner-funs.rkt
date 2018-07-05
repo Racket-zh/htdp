@@ -486,7 +486,7 @@
  @interaction[#:eval (bsl) v (list-ref v 9)]
 }
   @defproc[(list [x any/c] ... ) list?]{
- 用它的参数构造一个表。
+ 用参数构造表。
  @interaction[#:eval (bsl-eval) (list 1 2 3 4 5 6 7 8 9 0)]
 }
   @defproc[(make-list [i natural-number] [x any/c]) list?]{
