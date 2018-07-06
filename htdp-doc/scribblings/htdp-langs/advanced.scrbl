@@ -2,15 +2,13 @@
 @(require "common.rkt" "std-grammar.rkt" "prim-ops.rkt"
           (for-label lang/htdp-advanced))
 
-@title[#:tag "advanced"]{Advanced Student}
+@title[#:tag "advanced"]{高级}
 
 @section-index["ASL"]
 
 @declare-exporting[lang/htdp-advanced]
 
-The grammar notation uses the notation @racket[X #, @dots] (bold dots) to indicate that
-@racket[X] may occur an arbitrary number of times (zero, one, or more). The 
-grammar also provides @racket[...] as an identifier to be used in templates. 
+@grammar
 
 @racketgrammar*+qq[
 #:literals (define define-struct define-datatype lambda λ cond else if and or require lib planet
@@ -98,48 +96,38 @@ grammar also provides @racket[...] as an identifier to be used in templates.
 @prim-variables[("advanced") empty true false .. ... .... ..... ......]
 
 @; ----------------------------------------------------------------------
-@section[#:tag "advanced-syntax"]{Syntax for Advanced}
+@section[#:tag "advanced-syntax"]{高级的语法}
 
-In Advanced, @racket[set!] can be used to mutate variables, and
-@racket[define-struct]'s structures are mutatable. @racket[define] and
-@racket[lambda] can define functions of zero arguments, and function calls can
-invoke functions of zero arguments.
+在高级语言中，可以用@racket[set!]来修改变量的值，@racket[define-struct]所定义的结构体也是可变的。@racket[define]和@racket[lambda]可以定义零参数的函数，函数调用也可以使用零个参数。
 
 
 @defform[(lambda (variable #, @dots) expression)]{
 
-Creates a function that takes as many arguments as given @racket[variable]s,
-and whose body is @racket[expression].}
+创建函数，其函数体为@racket[expression]，它接收与给定@racket[variable]数量一样多的参数。}
 
 @defform[(λ (variable #, @dots) expression)]{
 
-The Greek letter @racket[λ] is a synonym for @racket[lambda].}
+希腊字母@racket[λ]是@racket[lambda]的同义词。}
 
 @defform/none[(expression expression #, @dots)]{
 
-Calls the function that results from evaluating the first
-@racket[expression]. The value of the call is the value of function's body when
-every instance of @racket[name]'s variables are replaced by the values of the
-corresponding @racket[expression]s.
+调用第一个@racket[expression]计算所得的函数。函数调用的值是函数体的值，其中每个@racket[name]变量的实例都被替换为对应@racket[expression]的值。
 
-The function being called must come from either a definition appearing before the
-function call, or from a @racket[lambda] expression. The number of argument
-@racket[expression]s must be the same as the number of arguments expected by
-the function.}
+被调用的函数必须来自函数调用之前出现的定义，或来自@racket[lambda]表达式。 参数@racket[expression]的数量必须与函数预期的参数数量相同。}
 
 @; ----------------------------------------------------------------------
 
 
 @defform[(define-datatype dataype-name [variant-name field-name #, @dots] #, @dots)]{
 
-A short-hand for defining a group of related structures. The following @racket[define-datatype]:
+定义一组相关结构体的简写形式。以下@racket[define-datatype]：
 
 @racketblock[
  (define-datatype datatype-name
    [variant-name field-name (unsyntax @racketidfont{#, @dots})]
    (unsyntax @racketidfont{...}))
 ]
-is equivalent to:
+等价于：
 @racketblock[
  (define ((unsyntax @racket[datatype-name])? x)
    (or ((unsyntax @racket[variant-name])? x) (unsyntax @racketidfont{...})))
@@ -151,42 +139,30 @@ is equivalent to:
 
 @defform[(begin expression expression #, @dots)]{
 
-Evaluates the @racket[expression]s in order from left to right. The value of
-the @racket[begin] expression is the value of the last @racket[expression].}
+按从左到右的顺序对@racket[expression]求值。@racket[begin]表达式的值是最后一个@racket[expression]的值。}
 
 
 
 @defform[(begin0 expression expression #, @dots)]{
 
-Evaluates the @racket[expression]s in order from left to right. The value of
-the @racket[begin] expression is the value of the first @racket[expression].}
+按从左到右的顺序对@racket[expression]求值。@racket[begin]表达式的值是第一个@racket[expression]的值。}
 
 
 
 @defform[(set! variable expression)]{
 
-Evaluates @racket[expression], and then mutates the @racket[variable]
-to have @racket[expression]'s value. The @racket[variable] must be defined 
-by @racket[define], @racket[letrec], @racket[let*], or @racket[let].}
+计算@racket[expression]的值，然后对@racket[variable]赋值。@racket[variable]必须由@racket[define]、@racket[letrec]、@racket[let*]或@racket[let]定义。}
 
 
 @defform[(delay expression)]{
 
-Produces a ``promise'' to evaluate @racket[expression]. The @racket[expression]
-is not evaluated until the promise is forced with @racket[force]; when
-the promise is forced, the result is recorded, so that any further
-@racket[force] of the promise immediately produces the remembered value.}
+返回对@racket[expression]求值的“承诺”。@racket[expression]不会被求值，直到这个承诺被@racket[force]强制求值；强制求值承诺时，结果会被记录，以后所有对该承诺的@racket[force]都会立即返回这个记住的值。}
 
 
 
 @defform[(shared ([name expression] #, @dots) expression)]{
 
-Like @racket[letrec], but when an @racket[expression] next to an @racket[id]
-is a @racket[cons], @racket[list], @racket[vector], quasiquoted
-expression, or @racketidfont{make-}@racket[_struct-name] from a
-@racket[define-struct], the @racket[expression] can refer directly to any
-@racket[name], not just @racket[name]s defined earlier. Thus,
-@racket[shared] can be used to create cyclic data structures.}
+类似于@racket[letrec]，但当@racket[name]旁边的@racket[expression]是@racket[cons]、@racket[list]、@racket[vector]、quasiquote的表达式、或来自@racket[define-struct]的@racketidfont{make-}@racket[_struct-name]时，该@racket[expression]可以直接引用任意的@racket[name]，而不仅限于之前定义过的@racket[name]。因此，@racket[shared]可用于创建循环数据结构。}
 
 
 @; ----------------------------------------------------------------------
@@ -194,20 +170,16 @@ expression, or @racketidfont{make-}@racket[_struct-name] from a
 
 @defform[(recur name ([name expression] #, @dots) expression)]{
 
-A short-hand syntax for recursive loops. The first @racket[name] corresponds to
-the name of the recursive function. The @racket[name]s in the parenthesis are
-the function's arguments, and each corresponding @racket[expression] is a
-value supplied for that argument in an initial starting call of the
-function. The last @racket[expression] is the body of the function.
+递归循环的简写语法。第一个@racket[name]对应于递归函数的名称。括号中的@racket[name]是函数的参数，对应的@racket[expression]是初次调用函数时提供给参数的值。最后一个@racket[expression]是函数体。
 
-More precisely, the following @racket[recur]: 
+更确切地说，以下@racket[recur]：
 
 @racketblock[
 (recur func-name ([arg-name arg-expression] (unsyntax @racketidfont{...}))
   body-expression)
 ]
 
-is equivalent to:
+等价于：
 
 @racketblock[
 (local [(define (func-name arg-name (unsyntax @racketidfont{...})) body-expression)]
@@ -217,7 +189,7 @@ is equivalent to:
 
 @defform/none[(let name ([name expression] #, @dots) expression)]{
 
-An alternate syntax for @racket[recur].}
+等价于@racket[recur]。}
 
 
 @; ----------------------------------------------------------------------
@@ -225,60 +197,36 @@ An alternate syntax for @racket[recur].}
 
 @defform[(case expression [(choice #, @dots) expression] #, @dots [(choice #, @dots) expression])]{
 
-A @racket[case] form contains one or more clauses. Each clause contains a
-choices (in parentheses)---either numbers or names---and an answer
-@racket[expression]. The initial @racket[expression] is evaluated, and its
-value is compared to the choices in each clause, where the lines are considered
-in order. The first line that contains a matching choice provides an answer
-@racket[expression] whose value is the result of the whole @racket[case]
-expression. Numbers match with the numbers in the choices, and symbols match
-with the names. If none of the lines contains a matching choice, it is an
-error.}
+@racket[case]语法包含一个或多个子句。子句由（括号中的）choice（选项）——可以是数值或名称——以及答案@racket[expression]组成。先计算第一个@racket[expression]，然后按顺序将其值和每个子句中的选项们比较。第一个匹配choice的行提供答案@racket[expression]，它的值就是整个@racket[case]的值。在choice中，数值匹配数值，而符号匹配其名称。如果没有任何一行包含匹配的choice，那么程序出错。
+}
 
 @defform/none[#:literals (case else)
               (case expression [(choice #, @dots) expression] #, @dots [else expression])]{
 
-This form of @racket[case] is similar to the prior one, except that the final
-@racket[else] clause is taken if no clause contains a choice matching the value
-of the initial @racket[expression].}
+这种形式的@racket[case]的类似于前一种，唯一的区别是，如果没有子句包含与第一个@racket[expression]匹配的选项，那么执行@racket[else]子句。}
 
 @; ----------------------------------------------------------------------
 
 
 @defform[(match expression [pattern expression] #, @dots)]{
 
-A @racket[match] form contains one or more clauses that are surrounded by
-square brackets. Each clause contains a pattern---a description of a value---and
-an answer @racket[expression].  The initial @racket[expression] is evaluated,
-and its value is matched against the pattern in each clause, where the clauses are
-considered in order. The first clause that contains a matching pattern provides
-an answer @racket[expression] whose value is the result of the whole
-@racket[match] expression. This @racket[expression] may reference identifiers
-defined in the matching pattern. If none of the clauses contains a matching
-pattern, it is an error.}
+@racket[match]语法包含一个或多个方括号括起来的子句。子句由模式——对值的描述——和答案@racket[expression]组成。先计算第一个@racket[expression]，然后按顺序将其值与子句中的模式进行匹配。第一个包含匹配模式的子句提供答案@racket[expression]，它的值就是整个@racket[match]表达式的值。答案@racket[expression]还可以引用匹配模式中定义的标识符。如果没有子句包含匹配模式，那么程序出错。}
 
 @; ----------------------------------------------------------------------
 
 
 @defform[(when question-expression body-expression)]{
 
-If @racket[question-expression] evaluates to @racket[true], the result of the
-@racket[when] expression is the result of evaluating the 
-@racket[body-expression], otherwise the result is @racket[(void)] and the 
-@racket[body-expression] is not evaluated. If the result of evaluating the
-@racket[question-expression] is neither @racket[true] nor @racket[false], it is an
-error.}
+如果@racket[question-expression]求值为@racket[true]，那么@racket[when]表达式的值就是@racket[body-expression]的值，否则就是@racket[(void)]而且@racket[body-expression]不会被求值。如果计算@racket[question-expression]所得既不是@racket[true]也不是@racket[false]，那么程序出错。}
 
 @defform[(unless question-expression body-expression)]{
 
-Like @racket[when], but the @racket[body-expression] is evaluated when the
-@racket[question-expression] produces @racket[false] instead of @racket[true].}
+类似于@racket[when]，但@racket[body-expression]在@racket[question-expression]计算为@racket[false]而不是@racket[true]时被求值。}
 
 
-@section[#:tag "advanced-common-syntax"]{Common Syntaxes}
+@section[#:tag "advanced-common-syntax"]{通用的语法}
 
-The following syntaxes behave the same in the @emph{Advanced}
-level as they did in the @secref["intermediate-lam"] level.
+以下语法在@emph{高级}中的行为和@secref["intermediate-lam"]中相同。
 
 
 @(intermediate-forms lambda
@@ -297,11 +245,10 @@ level as they did in the @secref["intermediate-lam"] level.
              define 
              lambda
              define-struct 
-             @{In Advanced, @racket[define-struct] introduces one additional function:
+             @{在高级语言中，@racket[define-struct]会多引入一个函数：
               @itemize[
                @item{@racketidfont{set-}@racket[_structure-name]@racketidfont{-}@racket[_field-name]@racketidfont{!}
-                : takes an instance of the structure and a value, and
-                mutates the instance's field to the given value.}]}
+                ：读入结构体实例和值，对实例的字段赋值。}]}
              define-wish
              cond
              else
@@ -321,11 +268,9 @@ level as they did in the @secref["intermediate-lam"] level.
 
 @; ----------------------------------------
 
-@section[#:tag "advanced-pre-defined"]{Pre-Defined Functions}
+@section[#:tag "advanced-pre-defined"]{预定义函数}
 
-The remaining subsections list those functions that are built into the
-programming language. All other functions are imported from a teachpack or
-must be defined in the program. 
+@pre-defined-fun
 
 @(require (submod lang/htdp-advanced procedures))
 @(render-sections (docs) #'here "htdp-advanced")

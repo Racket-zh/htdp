@@ -119,7 +119,7 @@
 
 @section[#:tag "intm-w-lambda-pre-defined"]{预定义函数}
 
-后续小节列出了编程语言中内置的函数。所有其他函数要么从教学包中导入，要么必须在程序中定义。
+@pre-defined-fun
 
 @(require (submod lang/htdp-intermediate-lambda procedures))
 @(render-sections (docs) #'here "htdp-intermediate-lambda")

@@ -4,6 +4,7 @@
   grammar
   i1-2-expl
   i2-3-expl
+  pre-defined-fun
   dots
   i1-2
   i2-3
@@ -27,3 +28,6 @@
 
 (define i2-3-expl
   @list{关于引用表的解释，请参阅@link[i2-3]{《程序设计方法（第二版）》的独立章节2}。})
+
+(define pre-defined-fun
+  @list{后续小节列出了编程语言中内置的函数。所有其他函数要么从教学包中导入，要么必须在程序中定义。})
