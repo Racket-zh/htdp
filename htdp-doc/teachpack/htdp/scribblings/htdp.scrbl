@@ -3,7 +3,7 @@
 @(require scribble/manual
           (for-label racket))
 
-@title[#:style '(toc) #:tag "htdp"]{HtDP Teachpacks}
+@title[#:style '(toc) #:tag "htdp"]{HtDP教学包}
 
 @local-table-of-contents[]
 
@@ -29,9 +29,4 @@
 @include-section["show-queen.scrbl"]
 
 @include-section["matrix.scrbl"]
-
-@;-- what do those do? --
-
-@;include-section["Simplified Racket Web Servlets"]
-@;include-section["Racket Web Servlets"]
 
