@@ -145,7 +145,7 @@
 
 @defform[(begin0 expression expression #, @dots)]{
 
-按从左到右的顺序对@racket[expression]求值。@racket[begin]表达式的值是第一个@racket[expression]的值。}
+按从左到右的顺序对@racket[expression]求值。@racket[begin0]表达式的值是第一个@racket[expression]的值。}
 
 
 
