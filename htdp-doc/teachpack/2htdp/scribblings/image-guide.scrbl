@@ -306,7 +306,7 @@ victorian
                      (rotate -60 (koch-curve 5)))
                     (flip-vertical (koch-curve 5)))]
 
-@section[#:tag "rotate-center"]旋转和图像中心}
+@section[#:tag "rotate-center"]{旋转和图像中心}
 
 旋转（rotate）图像时，有时围绕不是图像中心的点旋转时图像看起来最佳。然而，@racket[rotate]函数只是将图像作为一个整体旋转，相当于围绕其边界框的中心在旋转。
 

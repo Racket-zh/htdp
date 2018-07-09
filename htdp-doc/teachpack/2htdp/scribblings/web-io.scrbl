@@ -3,18 +3,16 @@
 @(require "shared.rkt" (for-label racket xml/xml))
 
 @teachpack["web-io"]{Web IO}
-@author{Matthias Felleisen}
+@author["Matthias Felleisen" "Racket-zh项目组译"]
 
 @defmodule[#:require-form beginner-require 2htdp/web-io]
 
-The teachpack provides a single function: 
+本教学包只提供一个函数：
 
 @defproc[(show-in-browser [x xexpr?]) string?]{
- Translates the given X-expression into a String. It also has the
- @bold{effect} of opening an external browser and displaying the
- X-expression rendered as XHTML.
+ 将输入的X表达式转换为字符串。它还具有打开外部浏览器并将X表达式呈现为XHTML的@bold{作用}。
 
-@bold{Example}
+@bold{示例}
 
 @racketblock[(show-in-browser '(html (body (b "hello world"))))]
 
