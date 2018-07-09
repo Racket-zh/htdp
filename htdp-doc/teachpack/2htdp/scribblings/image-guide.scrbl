@@ -50,38 +50,30 @@
 
 @title[#:style 
        (style #f (list (render-convertible-as '(svg-bytes png-bytes))))
-       #:tag "image-guide"]{Image Guide}
+       #:tag "image-guide"]{图像指南}
 
-This section introduces the @racketmodname[2htdp/image] library
-through a series of increasingly complex image constructions
-and discusses some subtle details of cropping and outline
-images.
+本节通过一系列复杂性递增的图像构造介绍@racketmodname[2htdp/image]库，并讨论图像裁剪和边框的一些微妙细节。
 
-@section{Overlaying, Above, and Beside: A House}
+@section{Overlay、Above和Beside：房子}
 
-To build a simple-looking house, we can place a triangle above 
-a rectangle.
+要建造简单的房子，只需在矩形上方放置三角形。
 
 @image-interaction[(above (triangle 40 "solid" "red")
                           (rectangle 40 30 "solid" "black"))]
 
-We can give the house two roofs by putting two triangles next to
-each other.
+只要将两个三角形彼此相邻放置，就能得到两个屋顶的房子。
 
 @image-interaction[(above (beside (triangle 40 "solid" "red")
                                   (triangle 40 "solid" "red"))
                           (rectangle 80 40 "solid" "black"))]
 
-But if we want the new roof to be a little smaller, then they do not line
-up properly.
+但如果希望新屋顶稍微小一点，那么它们就无法对齐了。
 
 @image-interaction[(above (beside (triangle 40 "solid" "red")
                                   (triangle 30 "solid" "red"))
                           (rectangle 70 40 "solid" "black"))]
 
-Instead, we can use @racket[beside/align] to line up the two triangles
-along their bottoms instead of along the middles (which is what
-@racket[beside] does).
+取而代之的做法，可以使用@racket[beside/align]将两个三角形底部（所而不是@racket[beside]所选择的中部）对其。
 
 @image-interaction[
 (define victorian 
@@ -92,35 +84,29 @@ along their bottoms instead of along the middles (which is what
 victorian
 ]
   
-To add a door to the house, we can overlay a brown @racket[rectangle],
-aligning it with the center bottom of the rest of the house.
+为了给房子增加一扇门，可以overlay（覆盖）一个棕色的@racket[rectangle]，将它与房子其他部分的中心底部对齐。
 
 @image-interaction[
 (define door (rectangle 15 25 "solid" "brown"))
 (overlay/align "center" "bottom" door victorian)]
 
-We can use a similar technique to put a doorknob on the door, but instead of
-overlaying the doorknob on the entire house, we can overlay it just on the
-door.
+使用类似的技术，我们可以加上一个门把手。但不是将把手overlay到整个房子上，而是将它overlay在门上。
 
 @image-interaction[
 (define door-with-knob
   (overlay/align "right" "center" (circle 3 "solid" "yellow") door))
 (overlay/align "center" "bottom" door-with-knob victorian)]
 
-@section{Rotating and Overlaying: A Rotary Phone Dial}
+@section{Rotate和Overlay：旋转拨号电话}
 
-A rotary phone dial can be built by from a black disk and 10 little white ones
-by placing the white disks, one at a time, at the top of the black disk and
-then rotating the entire black disk. To get started, lets define a function
-to make little white disks with numbers on them:
+旋转式电话拨号盘可以通过在黑色圆盘上放置10个白色小圆盘来构建，方法是一次在黑色圆盘顶部放置一个白色圆盘，然后旋转整个黑盘。首先，让我们定义函数来制作带有数字的小白盘：
 
 @image-interaction[(define (a-number digit)
                      (overlay
                       (text (number->string digit) 12 "black")
                       (circle 10 "solid" "white")))]
 
-We'll use @racket[place-and-turn] to put the numbers onto the disk:
+使用@racket[place-and-turn]将数字放到圆盘上：
 
 @image-interaction[(define (place-and-turn digit dial)
                      (rotate 30
@@ -128,7 +114,7 @@ We'll use @racket[place-and-turn] to put the numbers onto the disk:
                                             (a-number digit)
                                             dial)))]
 
-For example:
+例如：
 
 @image-interaction[(place-and-turn
                     0
@@ -142,7 +128,7 @@ For example:
                       0
                       (circle 60 "solid" "black"))))]
 
-We can write a single function to put all of the numbers together into the dial:
+可以编写函数将所有数字放入表盘：
 
 @image-interaction[(define (place-all-numbers dial)
                      (place-and-turn
@@ -169,8 +155,7 @@ We can write a single function to put all of the numbers together into the dial:
                                               
                    (place-all-numbers (circle 60 "solid" "black"))]
 
-That definition is long and tedious to write. We can shorten it using
-@racket[foldl]:
+这个定义即长又乏味。我们可以@racket[foldl]缩短之：
 
 @image-interaction[(define (place-all-numbers dial)
                      (foldl place-and-turn
@@ -179,16 +164,14 @@ That definition is long and tedious to write. We can shorten it using
                                               
                    (place-all-numbers (circle 60 "solid" "black"))]
 
-To finish off the dial, we need to rotate it a little bit to its natural
-position and put a white disk in the center of it. Here's the inner dial:
+要完成表盘，我们需要将它旋转到自然的位置，并在它的中心放一个白色圆盘。内部的表盘是：
 
 @image-interaction[(define inner-dial
                      (overlay
                       (text "555-1234" 9 "black")
                       (circle 30 "solid" "white")))]
 
-and here's a function to build the entire rotary dial, with an argument
-that scales the dial:
+这是创建完整旋转拨盘的函数，它有一个参数，用来缩放表盘：
 
 @image-interaction[(define (rotary-dial f)
                      (scale
@@ -200,11 +183,7 @@ that scales the dial:
                         (place-all-numbers (circle 60 "solid" "black"))))))
                    (rotary-dial 2)]
 
-Looking at the image, it feels like the numbers are too close to the edge of
-the dial. So we can adjust the @racket[place-and-turn] function to put a little
-black rectangle on top of each number. The rectangle is invisible because it
-ends up on top of the black dial, but it does serve to push the digits down
-a little.
+从图像上看，感觉数字太靠近表盘的边缘了。我们可以调整@racket[place-and-turn]函数，在每个数字的顶部放置一个黑色小矩形。矩形是不可见的，因为它最终位于黑色表盘之上，但它确实可以将数字向下推一点。
 
 @image-interaction[(define (place-and-turn digit dial)
                      (rotate 30
@@ -216,34 +195,25 @@ a little.
                    
                    (rotary-dial 2)]
 
-@section{Alpha Blending}
+@section{Alpha混合}
 
-With shapes that have opaque colors like @racket["red"] and @racket["blue"], 
-overlaying one on top completely blots out the one one the bottom. 
+对于具有不透明颜色（如@racket["red"]和@racket["blue"]）的形状，将一个overlay（覆盖）在另一个之上将完全遮住底下的那个。
 
-For example, the red rectangle here completely covers the blue one.
+例如，这里的绿色矩形完全盖住了蓝色矩形。
 
 @image-interaction[(overlay
                     (rectangle 60 100 "solid" (color 127 255 127))
                     (rectangle 100 60 "solid" (color 127 127 255)))]
 
-But @racketmodname[2htdp/image] also supports colors that are not 
-completely opaque, via the (optional) fourth argument to @racket[color].
+但@racketmodname[2htdp/image]也支持部分透明的颜色，通过@racket[color]（可选）的第四个参数。
 
 @image-interaction[(overlay
                     (rectangle 60 100 "solid" (color 0 255 0 127))
                     (rectangle 100 60 "solid" (color 0 0 255 127)))]
 
-In this example, the color @racket[(color 0 255 0 127)] looks just
-like the color @racket[(color 127 255 127)] when the background
-is white. Since white is @racket[(color 255 255 255)], we end up 
-getting @racket[1/2] of @racket[255] for the red and blue components
-and @racket[255] for the green one. 
+在这个例子中，当背景为白色时，颜色@racket[(color 0 255 0 127)]看起来就和颜色@racket[(color 127 255 127)]一样。由于白色是@racket[(color 255 255 255)]，最终得到的红色和蓝色成分就是@racket[255]的@racket[1/2]，而绿色成分是@racket[255]。
 
-We can also use alpha blending to make some interesting effects. 
-For example, the function @racket[spin-alot] takes an image argument
-and repeatedly places it on top of itself, rotating it each time by 
-@racket[1] degree.
+我们也可以使用alpha混合来制作一些有趣的效果。例如，函数@racket[spin-alot]读入图像参数，重复将其置于自身之上，每次旋转@racket[1]度。
 
 @image-interaction[(define (spin-alot t)
                      (local [(define (spin-more i θ)
@@ -254,8 +224,7 @@ and repeatedly places it on top of itself, rotating it each time by
                                              (+ θ 1))]))]
                        (spin-more t 0)))]
 
-Here are some uses of @racket[spin-alot], first showing the original
-shape and then the spun shape.
+以下是@racket[spin-alot]的一些用途，这里先给出原始形状再给出旋转后的形状。
 
 @image-interaction[(rectangle 12 120 "solid" (color 0 0 255))
                    (spin-alot (rectangle 12 120 "solid" (color 0 0 255 1)))
@@ -264,11 +233,9 @@ shape and then the spun shape.
                    (isosceles-triangle 120 30 "solid" (color 0 0 255))
                    (spin-alot (isosceles-triangle 120 30 "solid" (color 0 0 255 1)))]
 
-@section{Recursive Image Functions}
+@section{递归的图像函数}
 
-It is also possible to make interesting looking shapes with little recursive functions.
-For example, this function repeatedly puts white circles that grow, evenly spaced around 
-the edge of the given shape:
+也可以使用简短的递归函数制作有趣的形状。例如，这个函数围绕给定形状的边缘均匀放置不断增大的的白色圆圈：
 
 @image-interaction[(define (swoosh image s)
                      (cond
@@ -282,8 +249,7 @@ the edge of the given shape:
 @image-interaction[(swoosh (circle 100 "solid" "black") 
                            94)]
 
-More conventional fractal shapes can also be written using the image
-library, e.g.:
+使用图像库也可以编写很多经典的分形形状，例如：
 
 @image-interaction[(define (sierpinski-carpet n)
                      (cond
@@ -297,7 +263,7 @@ library, e.g.:
 
 @image-interaction/bitmap[(sierpinski-carpet 5)]
 
-We can adjust the carpet to add a little color:
+我们可以调整地毯添加一点颜色：
 
 @image-interaction[(define (colored-carpet colors)
                      (cond
@@ -318,8 +284,7 @@ We can adjust the carpet to add a little color:
                                  (color #xff #x00 #xff)
                                  (color 255 204 0)))]
 
-The Koch curve can be constructed by simply placing four
-curves next to each other, rotated appropriately:
+通过简单地将四条曲线彼此相邻放置，再适当旋转就可以构建科赫曲线：
 
 @image-interaction[(define (koch-curve n)
                      (cond
@@ -333,7 +298,7 @@ curves next to each other, rotated appropriately:
                                         smaller))]))
                    (koch-curve 5)]
 
-And then put three of them together to form the Koch snowflake.
+接下来把它们中的三个组合在一起形成科赫雪花。
 
 @image-interaction[(above 
                     (beside
@@ -341,36 +306,26 @@ And then put three of them together to form the Koch snowflake.
                      (rotate -60 (koch-curve 5)))
                     (flip-vertical (koch-curve 5)))]
 
-@section[#:tag "rotate-center"]{Rotating and Image Centers}
+@section[#:tag "rotate-center"]旋转和图像中心}
 
-When rotating an image, some times the image looks best when it
-rotates around a point that is not the center of the image. The 
-@racket[rotate] function, however, just rotates the image as
-a whole, effectively rotating it around the center of its
-bounding box.
+旋转（rotate）图像时，有时围绕不是图像中心的点旋转时图像看起来最佳。然而，@racket[rotate]函数只是将图像作为一个整体旋转，相当于围绕其边界框的中心在旋转。
 
-For example, imagine a game where the hero is represented
-as a triangle:
+例如，想象一个游戏，其中将英雄（hero）表示为三角形：
 @image-interaction[(define (hero α) 
                      (triangle 30 "solid" (color 255 0 0 α)))
                    (hero 255)]
-rotating the hero at the prompt looks reasonable:
+在提示符处旋转英雄看起来合理：
 @image-interaction[(rotate 10 (hero 255))
                    (rotate 20 (hero 255))
                    (rotate 30 (hero 255))]
-but if the hero has to appear to spin in place, then it will not look
-right, as you can kind of see if we use α-blending to represent
-old positions of the hero:
+但是如果英雄必须原地旋转，那么这看起来就不对了，如果使用α混合来表示英雄的旧位置：
 @image-interaction[(overlay (rotate 0  (hero 255))
                             (rotate 10 (hero 125))
                             (rotate 20 (hero 100))
                             (rotate 30 (hero  75))
                             (rotate 40 (hero  50))
                             (rotate 50 (hero  25)))]
-What we'd really want is for the hero to appear to rotate around
-the centroid of the triangle. To achieve this effect, we can put
-the hero onto a transparent circle such that the center of the whole
-image lines up with the centroid of the triangle:
+我们真正想要的是，让英雄围绕三角形的质心旋转。为了达到这个效果，可以将英雄放在透明的圆圈上，使整个图像的中心与三角形的质心对齐：
 @image-interaction[(define (hero-on-blank α)
                      (define the-hero (hero α))
                      (define w (image-width the-hero))
@@ -380,7 +335,7 @@ image lines up with the centroid of the triangle:
                      (define dy (* 2/3 h)) (code:comment "centroid y offset")
                      (define blank  (circle d "solid" (color 255 255 255 0)))
                      (place-image/align the-hero (- d dx) (- d dy) "left" "top" blank))]
-and now the rotating hero looks reasonable:
+这样英雄的旋转看起来就很合理了：
 @image-interaction[(overlay (rotate 0  (hero-on-blank 255))
                             (rotate 10 (hero-on-blank 125))
                             (rotate 20 (hero-on-blank 100))
@@ -388,49 +343,24 @@ and now the rotating hero looks reasonable:
                             (rotate 40 (hero-on-blank  50))
                             (rotate 50 (hero-on-blank  25)))]
 
-@section{Image Interoperability}
+@section{图像的互操作性}
 
-Images can connect to other libraries.  Specifically:
-@itemlist[@item{images are @racket[snip%] objects, so can
-                be @method[text% insert]ed into @racket[text%]
-                and @racket[pasteboard%] objects}
-           @item{they implement the @racket[convert] protocol for @racket['png-bytes]}
-           @item{they implement the @racket[pict-convert] protocol, and}
-           @item{there is a low-level interface for drawing directly into
-                 a @racket[dc<%>] object: @racket[render-image].}]
+图像可以结合其他库使用。具体说来：
+@itemlist[@item{图像是@racket[snip%]对象，所以可以被@method[text% insert]（插入）到@racket[text%]和@racket[pasteboard%]对象中}
+          @item{它们实现了@racket[convert]协议的@racket['png-bytes]}
+          @item{它们实现了@racket[pict-convert]协议}
+          @item{通过低级接口直接绘制到@racket[dc<%>]对象中：@racket[render-image]。}]
 
-@section[#:tag "nitty-gritty"]{The Nitty Gritty of Pixels, Pens, and Lines}
+@section[#:tag "nitty-gritty"]{像素、画笔和线的细节}
 
-The image library treats coordinates as if they are in the upper-left corner 
-of each pixel, and infinitesimally small (unlike pixels, which have some area).
+图像库认为坐标位于每个像素的左上角，并且是无限小的（与像素不同，它们是有面积的）。
 
-Thus, when drawing a solid @racket[square] of whose side-length is 10, the image library
-colors in all of the pixels enclosed by the @racket[square] starting at the upper
-left corner of (0,0) and going down to the upper left corner of (10,10),
-so the pixel whose upper left at (9,9) is colored in, but the pixel
-at (10,10) is not. All told, 100 pixels get colored in, just as expected for
-a @racket[square] with a side length of 10.
+因此，当绘制其边长为10的实心@racket[square]（正方形）时，图像库会对@racket[square]所包围的所有像素着色，由左上角的（0,0）开始到右下角的（10,10）结束，因此左上角为（9,9）的的像素被着色，而（10,10）的像素则没有。总共有100个像素被着色，正如符合边长为10的@racket[square]的预期。
 
-When drawing lines, however, things get a bit more complex. Specifically, 
-imagine drawing the outline of that rectangle. Since the border is
-between the pixels, there really isn't a natural pixel to draw to indicate
-the border. Accordingly, when drawing an outline @racket[square] (without a 
-@racket[pen] specification, but just a color as the last argument), 
-the image library uses a pen whose width is 1 pixel, but draws a line
-centered at the point (0.5,0.5) that goes down and around to the point (10.5,10.5).
-This means that the outline slightly exceeds the bounding box of the shape.
-Specifically, the upper and left-hand lines around the square are within
-the bounding box, but the lower and right-hand lines are just outside.
+然而，在绘制线条时，事情会变得复杂一些。具体来说，想象一下绘制该矩形的边框。由于边框位于像素之间，因此实际上不存在需要绘制的自然像素来表示边框。因此，当绘制边框@racket[square]（不使用@racket[pen]指定如何绘制，而是使用颜色作为最后一个参数）时，图像库使用宽度为1像素的画笔，绘制以点（0.5,0.5）为中心的线，其左下角位于（10.5,10.5）。这意味着边框稍稍超出形状的外围。具体来说，正方形的上边线和左边线都位于其外围只内，但是下边线和右边线都不在。
 
-@margin-note{If you are reading along with this section using
- @seclink["top" #:doc '(lib "scribblings/drracket/drracket.scrbl")]{DrRacket},
- note that DrRacket clips images to their bounding boxes when rendering them
- in the interactions window; read on for the ramifications but know for now that
- what you see in the example results here will not be exactly the same as
- what you see in the interactions window for that reason.}
-This kind of rectangle is useful when putting rectangles next to each other
-and avoiding extra thick lines on the interior. For example, consider
-building a grid like this:
+@margin-note{如果正在使用@seclink["top" #:doc '(lib "scribblings/drracket/drracket.scrbl")]{DrRacket}阅读本节，请注意当DrRacket在交互窗口中渲染图像时，会按其边界框切割图像；请继续阅读以了解跟多，但需要知道的是，此处例子的结果与交互窗口中看到的结果不完全相同。}
+当矩形彼此相邻放置时，这种绘制方法很有用，能避免内部出现粗线。例如，考虑创建如下的网格：
 
 @image-interaction[
 (define s1 (square 20 'outline 'black))
@@ -438,108 +368,59 @@ building a grid like this:
 (above  r1 r1 r1 r1 r1 r1)
 ]
 
-The reason interior lines in this grid are the same thickness as the lines around the edge
-is because the rectangles overlap with each other. 
-That is, the upper-left rectangle's right edge is right on top of the
-next rectangle's left edge.
+在这个网格中，内部线条与边缘线条的宽度相同，原因是矩形彼此重叠。也就是说，左侧矩形的右边缘于右侧矩形的左边缘重合。
 
-The special case of adding 0.5 to each coordinate when drawing the square
-applies to all outline polygon-based shapes that just pass color, 
-but does not apply when a @racket[pen]
-is passed as the last argument to create the shape.
-For example, if using a pen of thickness 2 to draw a rectangle, we get a
-shape that has a border drawing the row of pixels just inside and just outside
-the shape. One might imagine that a pen of thickness 1 would draw an outline around the shape with
-a 1 pixel thick line, but this would require 1/2 of each pixel to be illuminated, something
-that is not possible. Instead, the same pixels are lit up as with the 2 pixel wide pen, but
-with only 1/2 of the intensity of the color. So a 1 pixel wide black @racket[pen] object draws
-a 2 pixel wide outline, but in gray.
+在绘制图形时向每个坐标添加0.5，这种做法适用于所有仅传入颜色的多边形，但是如果最后一个参数传入@racket[pen]时就不适用。例如，如果使用厚度为2的pen（画笔）来绘制矩形，我们得到的边框在矩形内部和外部各占一个像素行。你可能认为，厚度为1的画笔会在形状周围画出一条1像素粗的线，但这需要每个像素的1/2被点亮，而这是不可能的。取而代之的做法，和宽为2像素的画笔一样的像素会被点亮，但颜色强度只有1/2。因此，1像素宽的黑色@racket[pen]对象绘制2像素宽的灰色边框。
 
 @image-interaction[(define p1 (make-pen "black" 1 "solid" "round" "round"))]
 @image-interaction/margin[2 (rectangle 20 20 "outline" p1)]
 
-When combining pens and cropping, we can make a rectangle that has a line that is one pixel
-wide, but where the line is drawn entirely within the rectangle. This rectangle has a two-pixel wide
-black pen, but we can crop out the outer portion of the pen.
+结合画笔和裁剪功能，我们可以绘制边框宽度为一个像素、且完全位于矩形内部的矩形。这个矩形使用两像素宽的黑色画笔，但之后裁剪掉画笔的外部。
 
 @image-interaction[(define p2 (make-pen "black" 2 "solid" "round" "round"))
                    (define s2 (crop 0 0 20 20 (rectangle 20 20 "outline" p2)))
                    s2]
 
-Using that we can build a grid now too, but this grid has doubled lines on the
-interior.
+这样做我们也可以创建网格，在网格中内部线条是（边框的）两倍。
 
 @image-interaction[
 (define r2 (beside s2 s2 s2 s2 s2 s2))
 (above  r2 r2 r2 r2 r2 r2)
 ]
 
-While this kind of rectangle is not useful for building grids, it 
-is important to be able to build rectangles whose drawing does not
-exceed its bounding box. Specifically, this kind of drawing is used
-by @racket[frame] and @racket[empty-scene] so that the extra drawn pixels
-are not lost if the image is later clipped to its bounding box.
+虽然这种矩形对于创建网格来说没啥用，但另一方面，创建绘图不超过其边界框的矩形非常有用。具体来说，@racket[frame]和@racket[empty-scene]就使用这种方式绘图，以便如果之后将图像剪切到其边界框时不会丢失像素。
 
-When using @racket[image->color-list] with outline shapes, the results
-can be surprising for the same reasons. For example, a
-2x2 black, outline rectangle consists of nine black pixels, as discussed above,
-but since @racket[image->color-list] only returns the pixels that are 
-within the bounding box, we see only three black pixels and one white one.
+对边框图形使用@racket[image->color-list]时，出于同样的原因，结果可能会令人惊讶。例如，如上所述，2x2的黑色边框矩形由九个像素组成，但由于@racket[image->color-list]仅返回边界框内的像素，因此我们只看到三个黑色像素和一个白色像素。
 
 @image-interaction[(image->color-list
                     (rectangle 2 2 "outline" "black"))]
 
-The black pixels are (most of) the upper and left edge of the outline shape,
-and the one white pixel is the pixel in the middle of the shape.
+黑色的像素是图形的（部分）上边缘和左边缘，而白色像素是图形中间的那个。
 
-@section[#:tag "nitty-gritty-alpha"]{The Nitty Gritty of Alpha Blending}
+@section[#:tag "nitty-gritty-alpha"]{Alpha混合的细节}
 
-Alpha blending can cause imprecision in color comparisons resulting in
-shapes that appear @racket[equal?] even though they were created with
-different colors. This section explains how that happens.
+Alpha混合会导致颜色的不精确，从而使图形看起来@racket[equal?]即使它们是用不同的颜色创建的。本节介绍这种情况的原因。
 
-To start, consider the color @racket[(make-color 1 1 1 50)].
-This color is nearly the darkest shade of black, but with lots of transparency,
-to it renders a light gray color on a white background, e.g.:
+首先，考虑颜色@racket[(make-color 1 1 1 50)]。这几乎就是最暗的黑色，但又很透明，所以在白色背景上呈现时它呈浅灰色，例如：
 @image-interaction[(rectangle 100 100 "solid" (make-color 1 1 1 50))]
-If the background had been green, the same rectangle would look like a darker shade of green:
+如果背景是绿色，那么这个矩形看起来就是深绿色：
 @image-interaction[(overlay
                     (rectangle 100 100 "solid" (make-color 1 1 1 50))
                     (rectangle 200 200 "solid" "green"))]
 
-Surprisingly, this shape is equal to one that (apparently) has a different
-color in it:
+令人惊讶的是，这个形状于（显然）颜色不同的形状相等：
 @image-interaction[(equal? 
                     (rectangle 100 100 'solid (make-color 1 1 1 50))
                     (rectangle 100 100 'solid (make-color 2 2 2 50)))]
-To understand why, we must look more carefully at how alpha blending
-and image equality work. Image equality's definition is straightforward: two images
-are equal if they are both drawn the same. That is, image equality
-is defined by simply drawing the two shapes on a white background and
-then comparing all of the pixels for the two drawings
-(it is implemented more efficiently in some cases, however).
+为了理解原因，我们必须更仔细地研究alpha混合和图像相等。图像相等的定义很简单：如果两个图像画出来是相同的，那么它们是相等的。也就是说，图像相等性的定义是简单地在白色背景上绘制两个形状然后比较所有像素来（当然，在某些情况下，它有更有效地实现）。
 
-So, for those shapes to be equal, they must be drawn with the same colors.
-To see what colors were actually drawn, we can use @racket[image->color-list].
-Since these images use the same color in every pixel, we can examine just the first one:
+所以，既然这两个形状相等，它们必然使用了相同的颜色绘制。要查看实际绘制的颜色，我们可以使用@racket[image->color-list]。由于这两个图像的所有像素都使用相同的颜色，我们只需检查其第一个像素：
 @image-interaction[(first
                     (image->color-list
                      (rectangle 100 100 'solid (make-color 1 1 1 50))))
                    (first
                     (image->color-list
                      (rectangle 100 100 'solid (make-color 2 2 2 50))))]
-As expected from the @racket[equal?] test, the two colors are the same, but
-why should they be the same? This is where a subtle aspect of alpha blending 
-and drawing comes up. In general, alpha blending works by taking the color
-of any shapes below the one being drawn and then combining that color with
-the new color. The precise amount of the combination is controlled by the alpha value. 
-So, if a shape has an alpha value of @racket[α], then the drawing library
-multiplies the new shapes color by @racket[(/ α 255)] and the existing shape's
-color by @racket[(- 1 (/ α 255))] and then adds the results to get the final color.
-(It does this for each of the red, green, and blue components separately.)
+正如@racket[equal?]测试所示，这两个颜色是一样的，但为什么呢？这正是alpha混合和绘图的微妙之处。通常alpha混合这样工作：获取需要绘制图像下方的颜色，将其与新颜色组合。组合的精确量由α值控制。所以，如果某个形状的alpha值为@racket[α]，那么绘图库会将新颜色乘以@racket[(/ α 255)]、原有颜色乘以@racket[(- 1 (/ α 255))]，然后将结果相加以获得最终的颜色。（会分别为红色、绿色和蓝色成分执行此操作。）
 
-Going back to the two example rectangles,
-the drawing library multiplies @code{50/255} by @racket[1] for the first
-shape and multiplies @code{50/255} by @racket[2] for the second shape (since they
-are both drawn on a white background). Then it rounds them to integers, which
-results in @racket[0] for both colors, making the images the same.
+回过来看例子中的两个矩形，对于第一个形状，绘图库将@code{50/255}乘以@racket[1]，对于第二个形状，则将@code{50/255}乘以@racket[2]（因为它们都是在白色背景上绘制的）。接下来要将它们舍入为整数，因此两种情况下颜色的结果都是@racket[0]，所以两个图像相同。
