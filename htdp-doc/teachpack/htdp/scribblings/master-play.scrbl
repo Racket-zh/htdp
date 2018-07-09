@@ -2,13 +2,11 @@
 
 @(require scribble/manual "shared.rkt" (for-label racket teachpack/htdp/master))
 
-@teachpack["master-play"]{Playing MasterMind}
+@teachpack["master-play"]{玩猜颜色}
 
 @defmodule[#:require-form beginner-require htdp/master-play]
 
-The teachpack implements the MasterMind game so that students can play the
-game and get an understanding of what we expect from them. 
+本教学包实现了（完整的）猜颜色游戏，以便学生可以玩游戏、并了解我们对他们的期望。
 
 @defproc[(go [name symbol?]) true]{
-chooses a ``secret'' three-letter word, opens a canvas and a menu, 
-and asks the player to guess the word.}
+}
