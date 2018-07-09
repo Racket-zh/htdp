@@ -12,8 +12,8 @@
          #:style (if svg? 
                      (style #f (list (render-convertible-as '(svg-bytes png-bytes))))
                      #f)
-         `(,@name ": " ,(filepath (format "~a.rkt" tp))
-           ,(index (format "~a teachpack" tp)))))
+         `(,@name "：" ,(filepath (format "~a.rkt" tp))
+           ,(index (format "~a教学包" tp)))))
 
 (define-syntax-rule (def-req beg-require)
   (begin
