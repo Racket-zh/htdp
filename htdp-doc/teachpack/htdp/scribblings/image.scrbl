@@ -86,7 +86,12 @@ DrRacket可以插入来自文件系统的图像。请尽可能使用PNG格式。
 @defproc[(image-height [i image?]) integer?]{
  获取@racket[i]的高度（单位为像素）}
 
-对于图像的组合，必须了解@emph{pinhole}（针孔）的概念。每张图片都带有pinhole。对于使用前述函数创建的图像，除了@racket[line]和@racket[text]之外，pinhole都位于形状的中心。@racket[text]函数将pinhole放在图像的左上角，而@racket[line]将pinhole放在线的开头（也就是说，如果@racket[line]的前两个参数线为正数，那么pinhole位于左上角）。当然，pinhole可以移动，并且图像组合物根据自己的规则定位pinhole。不确定的话，可以随时找到pinhole的位置，或者根据需要放置pinhole。
+对于图像的组合，必须了解@emph{pinhole}（针孔）的概念。每张图片都带有pinhole。
+对于使用前述函数创建的图像，除了@racket[line]和@racket[text]之外，pinhole都位于形状的中心。
+@racket[text]函数将pinhole放在图像的左上角，
+而@racket[line]将pinhole放在线的开头（也就是说，如果@racket[line]的前两个参数线为正数，那么pinhole位于左上角）。
+当然，pinhole可以移动，并且图像组合物根据自己的规则定位pinhole。
+不确定的话，可以随时找到pinhole的位置，或者根据需要放置pinhole。
 
 @defproc[(pinhole-x [i image?]) integer?]{求pinhole的@racket[x]坐标，从图像左侧开始计算。}
 
@@ -96,7 +101,8 @@ DrRacket可以插入来自文件系统的图像。请尽可能使用PNG格式。
  创建pinhole位于@racket[x]和@racket[y]的新图像，分别从图像左侧和顶部（向下）开始计算。}
 
 @defproc[(move-pinhole [i image?] [delta-x number?] [delta-y number?]) image?]{
- 创建新图像，将pinhole从当前位置向右和向下移动@racket[delta-x]和@racket[delta-y]像素。要向左或向上移动的话，使用负数。}
+ 创建新图像，将pinhole从当前位置向右和向下移动@racket[delta-x]和@racket[delta-y]像素。
+ 要向左或向上移动的话，使用负数。}
 
 @;-----------------------------------------------------------------------------
 @section[#:tag "composition"]{图像的组合}
@@ -138,7 +144,8 @@ DrRacket可以插入来自文件系统的图像。请尽可能使用PNG格式。
 @defproc[(image-inside? [img image?] [other image?]) boolean?]{
  判断第二个图像的像素是否出现在第一个图像中。
 
-将此函数与jpeg图像一起使用时要小心。如果使用图像编辑程序裁剪jpeg图像然后保存之，由于JPEG图像的压缩，因此@racket[image-inside?]无法识别裁剪后的图像。}
+将此函数与jpeg图像一起使用时要小心。如果使用图像编辑程序裁剪jpeg图像然后保存之，
+由于JPEG图像的压缩，因此@racket[image-inside?]无法识别裁剪后的图像。}
 
 @defproc[(find-image [img image?] [other image?]) posn?]{
  求第二个图像的像素出现在第一个图像中的（相对于第一个图像的pinhole的）位置。如果@racket[(image-inside?
@@ -169,7 +176,8 @@ DrRacket可以插入来自文件系统的图像。请尽可能使用PNG格式。
 
 @deftech{scene}（场景）是pinhole位于其左上角的图像，即@racket[pinhole-x]和@racket[pinhole-y]都返回@racket[0]。
 
-对@racketmodname[2htdp/universe]和@racketmodname[htdp/world]教学包来说，场景特别有用，因为它们在画布中只能显示@tech{scene}。
+对@racketmodname[2htdp/universe]和@racketmodname[htdp/world]教学包来说，
+场景特别有用，因为它们在画布中只能显示@tech{scene}。
 
 @defproc[(scene? [x any/c]) boolean?]{@racket[x]是场景吗？}
 
@@ -181,7 +189,8 @@ DrRacket可以插入来自文件系统的图像。请尽可能使用PNG格式。
 @defproc[(place-image [img image?] [x number?] [y number?]
                       [s scene?])
          scene?]{
- 将@racket[img]放置到@racket[s]的@math{(@racket[x], @racket[y])}位置，创建场景；@math{(@racket[x], @racket[y])}是计算机图形坐标，也就是说它们从左上角向右和向下计数。}
+ 将@racket[img]放置到@racket[s]的@math{(@racket[x], @racket[y])}位置，创建场景；
+ @math{(@racket[x], @racket[y])}是计算机图形坐标，也就是说它们从左上角向右和向下计数。}
 
 
 @defproc[(nw:rectangle [width natural-number/c] [height natural-number/c] [solid-or-outline Mode] [c Color]) image?]{
@@ -213,7 +222,8 @@ DrRacket可以插入来自文件系统的图像。请尽可能使用PNG格式。
            [height natural-number/c]
            [x natural-number/c]
            [y natural-number/c]) image?]{
- 将颜色表@racket[l]转换为图像，其宽度为@racket[width]，高度为@racket[height]，pinhole坐标相对图像左上角为（@racket[x],@racket[y]）。}
+ 将颜色表@racket[l]转换为图像，其宽度为@racket[width]，
+ 高度为@racket[height]，pinhole坐标相对图像左上角为（@racket[x],@racket[y]）。}
 
 后续的函数也提供alpha通道信息。Alpha通道是衡量透明度的标准；0表示完全不透明，255表示完全透明。
 
@@ -233,5 +243,6 @@ DrRacket可以插入来自文件系统的图像。请尽可能使用PNG格式。
             [height integer?]
             [x integer?]
             [y integer?]) image?]{
- 将@racket[alpha-color]表@racket[l]转换为图像，其宽度为@racket[width]，高度为@racket[height]，pinhole坐标相对图像左上角为（@racket[x],@racket[y]）。
+ 将@racket[alpha-color]表@racket[l]转换为图像，其宽度为@racket[width]，
+ 高度为@racket[height]，pinhole坐标相对图像左上角为（@racket[x],@racket[y]）。
 }

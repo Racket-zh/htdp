@@ -1657,7 +1657,7 @@ DrRacket的@seclink["images" #:doc '(lib "scribblings/drracket/drracket.scrbl")]
 @racket["pinhole"]或
 @racket['pinhole]之一。
 
-只有当所有图像参数都有@seclink["pinholes"]{pinholes}时，
+只有当所有图像参数都有@seclink["pinholes"]{pinhole}时，
 才允许使用@racket["pinhole"]或@racket['pinhole]。
 
 有关基线的更多讨论，另请参见@racket[image-baseline]。
@@ -1676,7 +1676,7 @@ DrRacket的@seclink["images" #:doc '(lib "scribblings/drracket/drracket.scrbl")]
   @racket["pinhole"]或
   @racket['pinhole]之一。
 
-  只有当所有图像参数都有@seclink["pinholes"]{pinholes}时，
+  只有当所有图像参数都有@seclink["pinholes"]{pinhole}时，
   才允许使用@racket["pinhole"]或@racket['pinhole]。
 
 }
@@ -1759,7 +1759,7 @@ DrRacket的@seclink["images" #:doc '(lib "scribblings/drracket/drracket.scrbl")]
                         (square 60 "solid" "transparent"))]
 参见@secref["nitty-gritty-alpha"]。
 
-@section[#:tag "pinholes"]{Pinholes}
+@section[#:tag "pinholes"]{Pinhole}
 
 pinhole是图像的可选属性，用于标识图像中的某个点。
 使用pinhole可以方便地叠加图像，按pinhole对齐。
