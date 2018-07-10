@@ -2,7 +2,7 @@
 
 @(require "shared.rkt" (for-label racket xml/xml))
 
-@teachpack["web-io"]{Web IO}
+@teachpack["web-io"]{网页IO}
 @author["Matthias Felleisen" "Racket-zh项目组译"]
 
 @defmodule[#:require-form beginner-require 2htdp/web-io]

@@ -53,7 +53,8 @@ batch-io教学包引入了用于从文件中读取内容的几个函数和一个
 @; -----------------------------------------------------------------------------
 @section{IO函数}
 
-所有读取文件的函数都读入文件名以及其他可选参数。它们假设指定的文件与程序存在于同一文件夹中；如果不然，则抛出错误：
+所有读取文件的函数都读入文件名以及其他可选参数。
+它们假设指定的文件与程序存在于同一文件夹中；如果不然，则抛出错误：
 @itemlist[
 
 @item{@reading[read-file string?]{包含换行符的字符串}
@@ -86,7 +87,8 @@ batch-io教学包引入了用于从文件中读取内容的几个函数和一个
 @examples[#:eval (examples-batch-io)
 (read-words "data.txt")
 ]
-然而，这一次@racket["data.txt"]第二行的额外前导空格不在结果中。此空格被认为是围绕@racket["good"]一词的分隔符的一部分。
+然而，这一次@racket["data.txt"]第二行的额外前导空格不在结果中。
+此空格被认为是围绕@racket["good"]一词的分隔符的一部分。
 }
 
 @item{@reading[read-words/line (listof (listof string?))]{表的表，每行一个表；行表示为字符串的表}
@@ -99,7 +101,8 @@ batch-io教学包引入了用于从文件中读取内容的几个函数和一个
 即使最后一行不以换行结束，函数也假设如此。
 }
 
-@item{@reading[read-words-and-numbers/line (listof (or number? string?))]{表的表，每行一个表；行表示为字符串或数值的表}
+@item{@reading[read-words-and-numbers/line (listof (or number? string?))]{
+表的表，每行一个表；行表示为字符串或数值的表}
 
 @examples[#:eval (examples-batch-io)
 (read-words-and-numbers/line "data.txt")
@@ -118,13 +121,15 @@ batch-io教学包引入了用于从文件中读取内容的几个函数和一个
 需要理解的是，行不必具有相同的长度。这个例子中，第三行包含三个元素。
 }
 
-@item{@reading[read-csv-file/rows (listof X?) [s (-> (listof any/c) X?)]]{行的表；读取文件@racket[f]的内容，将每行通过@racket[s]构造为数据}
+@item{@reading[read-csv-file/rows (listof X?) [s (-> (listof any/c) X?)]]{
+行的表；读取文件@racket[f]的内容，将每行通过@racket[s]构造为数据}
 
 @examples[#:eval (examples-batch-io)
 (read-csv-file/rows "data.csv" (lambda (x) x))
 (read-csv-file/rows "data.csv" length)
 ]
- 第一个例子显示@racket[read-csv-file]就是@racket[read-csv-file/rows]的缩写形式；第二个例子计算每一行词的数量，结果就是数值的表。在许多场景下，函数参数可以从行中构造结构体。}
+ 第一个例子显示@racket[read-csv-file]就是@racket[read-csv-file/rows]的缩写形式；
+ 第二个例子计算每一行词的数量，结果就是数值的表。在许多场景下，函数参数可以从行中构造结构体。}
 
 @; -----------------------------------------------------------------------------
 @item{@reading[read-xexpr xexpr?]{包含诸如制表符、换行符等空格的X表达式}
@@ -140,7 +145,8 @@ batch-io教学包引入了用于从文件中读取内容的几个函数和一个
 
 @item{@reading[read-plain-xexpr xexpr?]{不包含空格的X表达式}
 
-假设：文件@racket[f]或者所选的输入设备包含XML元素，该元素的内容是其他XML元素和空格。特别地，XML元素不包含任何除空格之外的字符串元素。
+假设：文件@racket[f]或者所选的输入设备包含XML元素，该元素的内容是其他XML元素和空格。
+特别地，XML元素不包含任何除空格之外的字符串元素。
 
 @examples[#:eval (examples-batch-io)
 (read-plain-xexpr "data-plain.xml")
@@ -154,7 +160,8 @@ batch-io教学包引入了用于从文件中读取内容的几个函数和一个
 @itemlist[
 
 @item{@defproc[(write-file [f (or/c 'standard-out 'stdout string?)] [cntnt string?]) string?]{
- 将@racket[cntnt]送往标准输出设备，或将@racket[cntnt]转化为文件@racket[f]的内容，该文件与程序位于同一文件夹（目录）中。如果写入成功，函数返回文件名（@racket[f]）；否则它会抛出错误。}
+ 将@racket[cntnt]送往标准输出设备，或将@racket[cntnt]转化为文件@racket[f]的内容，该文件与程序位于同一文件夹（目录）中。
+ 如果写入成功，函数返回文件名（@racket[f]）；否则它会抛出错误。}
 
 @examples[#:eval (examples-batch-io)
 (if (string=? (write-file "output.txt" "good bye") "output.txt")
@@ -175,14 +182,18 @@ cruel world
    (with-handlers ([exn:fail:filesystem? void])
      (delete-file "output.txt")))
 
-@bold{警告}：此教学包中的文件IO函数和操作系统相关。这就是说，只要程序和文件位于同一平台上，读取程序写入的文件就不会有任何问题，反之亦然。但是，如果某个程序在Windows操作系统上写入文件，然后将此输出文件复制到Mac，那么读取复制后的文本文件可能会产生多余的“return”字符。请注意，这仅描述了一种可能出现的故障；很多在其他情况下，跨平台操作都可能会导致本教学包失效。
+@bold{警告}：此教学包中的文件IO函数和操作系统相关。这就是说，只要程序和文件位于同一平台上，
+读取程序写入的文件就不会有任何问题，反之亦然。但是，如果某个程序在Windows操作系统上写入文件，
+然后将此输出文件复制到Mac，那么读取复制后的文本文件可能会产生多余的“return”字符。请注意，
+这仅描述了一种可能出现的故障；很多在其他情况下，跨平台操作都可能会导致本教学包失效。
 
 @; -----------------------------------------------------------------------------
 @(define-syntax (reading/web stx)
    (syntax-case stx ()
      [(reading name ctc s)
      #`@defproc[(@name [u string?]) @ctc]{
-      读取URL @racket[u]的内容，以@list[s]@racket[xexpr?]形式返回其中第一个XML元素。如果可能，将URL处的HTML解释为XML。如果网页不存在（404），则函数返#@racket[f]。}]
+      读取URL @racket[u]的内容，以@list[s]@racket[xexpr?]形式返回其中第一个XML元素。
+      如果可能，将URL处的HTML解释为XML。如果网页不存在（404），则函数返#@racket[f]。}]
      [(reading name ctc [x ctc2] s ...)
       #`@defproc[(@name [f (or/c 'standard-in 'stdin (and/c string? file-exists?))] [@x @ctc2]) @ctc ]{
       reads the content of URL @racket[u] and produces the first XML
@@ -192,7 +203,8 @@ cruel world
 
 @section{网页函数}
 
-所有读取基于网页的XML的函数都读入URL以及其他可选参数。它们假设计算机可以接到指定的网页，但也容忍网页不存在（404错误）。
+所有读取基于网页的XML的函数都读入URL以及其他可选参数。
+它们假设计算机可以接到指定的网页，但也容忍网页不存在（404错误）。
 
 @itemlist[
 @; -----------------------------------------------------------------------------

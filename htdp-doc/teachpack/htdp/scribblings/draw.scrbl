@@ -3,29 +3,23 @@
 @(require scribble/manual "shared.rkt"
           (for-label racket teachpack/htdp/draw))
 
-@teachpack["draw"]{Simple Drawing}
+@teachpack["draw"]{简单的绘图}
 
 @;declare-exporting[teachpack/htdp/draw]
 @defmodule[#:require-form beginner-require htdp/draw #:use-sources (htdp/big-draw htdp/draw)]
 
-The teachpack provides two sets of functions: one for drawing into a canvas
-and one for reacting to canvas events. 
+本教学包提供两类函数：一类用于绘制画布，另一类用于对画布事件做出反应。
 
-@deprecated[(list @racketmodname[2htdp/image] " (probably in conjunction with " @racketmodname[2htdp/universe] ")")]{
-  You may continue to use the library for solving exercises 
-  from @emph{How To Design Programs, First Edition} but do consider
-  switching to @link["http://www.ccs.neu.edu/home/matthias/HtDP2e/"]{How To Design Programs, Second Edition} instead.}
+@deprecated[(list @racketmodname[2htdp/image] "（可能与" @racketmodname[2htdp/universe] "结合）")]{
+  你可以继续配合@emph{《程序设计方法》第一版}使用本库，但请考虑换用@link["http://www.ccs.neu.edu/home/matthias/HtDP2e/"]{《程序设计方法》第二版}。}
 
-@section[#:tag "drawing"]{Drawing on a Canvas}
+@section[#:tag "drawing"]{在画布上绘图}
 
 @deftech{DrawColor}: @racket[(and/c symbol? (one-of/c 'white 'yellow 'red 'blue 'green 'black))]
-These six colors are definitely provided. If you want other colors,
-guess! For example, @racket['orange] works, but @racket['mauve]
-doesn't. If you apply the function to a symbol that it doesn't recognize as
-a color, it raises an error.
+保证至少提供这六种颜色。如果需要其他颜色，请猜测！例如，@racket['orange]有效，但是@racket['mauve]无效。如果使用不认识的颜色调用（绘图）函数，会抛出错误。
 
-@defproc[(start [width number?][height number?]) true]{Opens a
-@racket[width] x @racket[height] canvas.} 
+@defproc[(start [width number?][height number?]) true]{
+ 打开@racket[width]乘@racket[height]的画布。} 
 
 @defproc[(start/cartesian-plane [width number?][height number?])
          true]{
