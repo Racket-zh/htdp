@@ -23,7 +23,7 @@
 @defproc[(write-file [l (list-of atom)]) true]{
 读入符号和annotation的表，将其打印为“文件”。}
 
-示例会话：将教学包设为“docs.rkt”并单击“运行”：
+示例会话：将教学包设为@filepath{docs.rkt}并单击“运行”：
 @(begin
 #reader scribble/comment-reader
 (racketblock
