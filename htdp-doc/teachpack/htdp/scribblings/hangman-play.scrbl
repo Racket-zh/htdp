@@ -3,13 +3,11 @@
 @(require scribble/manual "shared.rkt"
           (for-label racket teachpack/htdp/hangman))
 
-@teachpack["hangman-play"]{Playing Hangman}
+@teachpack["hangman-play"]{玩刽子手}
 
 @defmodule[#:require-form beginner-require htdp/hangman-play]
 
-The teachpack implements the Hangman game so that students can play the
-game and get an understanding of what we expect from them. 
+本教学包实现了刽子手游戏，以便学生可以玩游戏并了解我们对他们的期望。
 
 @defproc[(go [name symbol?]) true]{
-chooses a ``secret'' three-letter word, opens a canvas and a menu, 
-and asks the player to guess the word.}
+选择“秘密的”三字母单词，打开画布和菜单，然后要求玩家猜出这个单词。}
