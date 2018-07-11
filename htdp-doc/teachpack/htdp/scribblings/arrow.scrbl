@@ -3,26 +3,26 @@
 @(require scribble/manual "shared.rkt"
           (for-label scheme teachpack/htdp/arrow))
 
-@teachpack["arrow"]{Managing Control Arrows}
+@teachpack["arrow"]{管理控制箭头}
 
 @;declare-exporting[teachpack/htdp/arrow]
 @defmodule[#:require-form beginner-require htdp/arrow]
 
-The teachpack implements a controller for moving shapes across a canvass.  
+本教学包实现了用于在画布上移动图形的控制函数。
 
 @defproc[(control-left-right
 	   [shape Shape]
 	   [n number?]
 	   [move (-> number? Shape Shape)]
-	   [draw (-> Shape true)]) true]{Moves shape @racket[n] pixels left
-(negative) or right (positive).} 
+	   [draw (-> Shape true)]) true]{
+向左（负数）或向右（正数）移动shape @racket[n]像素。} 
 
 @defproc[(control-up-down
 	   [shape Shape]
 	   [n number?]
 	   [move (-> number? Shape Shape)]
-	   [draw (-> Shape true)]) true]{Moves shape @racket[n] pixels up
-(negative) or down (positive).} 
+	   [draw (-> Shape true)]) true]{
+向上（负数）或向下（正数）移动shape @racket[n]像素。} 
 
 @defproc[(control
 	   [shape Shape]
@@ -30,21 +30,20 @@ The teachpack implements a controller for moving shapes across a canvass.
 	   [move-lr (-> number? Shape Shape)]
 	   [move-ud (-> number? Shape Shape)]
 	   [draw (-> Shape true)]) true]{
-Moves shape @racket[N] pixels left or right and up or down, respectively.} 
+向任意方向移动shape @racket[N]像素。} 
 
-Example:
+示例：
 @(begin
 #reader scribble/comment-reader
 (racketblock 
-;; A shape is a structure:
+;; shape是结构体：
 ;;   (make-posn num num)
 
-;; RAD : the radius of the simple disk moving across a canvas
+;; RAD ：（在画布上移动的简单）圆盘的半径
 (define RAD 10)
 
 ;; move : number shape -> shape or false
-;; to move a shape by delta according to translate
-;; effect: to redraw it
+;; 将shape平移delta像素：重新绘制
 (define (move delta sh)
   (cond
     [(and (clear-solid-disk sh RAD)
@@ -53,20 +52,20 @@ Example:
     [else false]))
 
 ;; translate : shape number -> shape
-;; to translate a shape by delta in the x direction
+;; 在x方向平移shape delta（像素）
 (define (translate sh delta)
   (make-posn (+ (posn-x sh) delta) (posn-y sh)))
 
 ;; draw-it : shape -> true
-;; to draw a shape on the canvas: a disk with radius
+;; 在画布上绘制shape：半径为RAD的圆盘
 (define (draw-it sh)
   (draw-solid-disk sh RAD))
 
-;; Run:
+;; 运行：
 
-;; this creates the canvas
+;; 创建画布
 (start 100 50)
 
-;; this creates the controller GUI
+;; 创建控制GUI
 (control-left-right (make-posn 10 20) 10 move draw-it)
 ))
