@@ -3,30 +3,27 @@
 @(require scribble/manual "shared.rkt"
           (for-label racket teachpack/htdp/docs))
 
-@teachpack["docs"]{Manipulating Simple HTML Documents}
+@teachpack["docs"]{操作简单的HTML文档}
 
 @;declare-exporting[teachpack/htdp/docs]
 @defmodule[#:require-form beginner-require htdp/docs]
 
-The teachpack provides three functions for creating simple ``HTML'' documents: 
+本教学包提供三个函数，用于创建简单的“HTML”文档：
 
-@deftech{Annotation} An @tech{Annotation} is a symbol that starts with ``<''
-and ends in ``>''. An end annotation is one that starts with ``</''.
+@deftech{Annotation} @tech{Annotation}是以“<”开头并以“>”结尾的符号。
+结束annotation是以“</”开头的annotation。
 
-@defproc[(atom? [x any/c]) boolean?]{Determines whether or not a value
-is a number, a symbol, or a string.} 
+@defproc[(atom? [x any/c]) boolean?]{判断某个值是否是数字、符号或字符串。} 
 
-@defproc[(annotation? [x any/c]) boolean?]{Determines whether or not a
-symbol is a document annotation.} 
+@defproc[(annotation? [x any/c]) boolean?]{确定符号是否是文档annotation。} 
 
-@defproc[(end-annotation [x (unsyntax @tech{Annotation})]) (unsyntax @tech{Annotation})]{Consumes an annotation
-and produces a matching ending annotation.} 
+@defproc[(end-annotation [x (unsyntax @tech{Annotation})]) (unsyntax @tech{Annotation})]{
+读入annotation，生成对应的结束annotation。} 
 
 @defproc[(write-file [l (list-of atom)]) true]{
-Consumes a list of symbols and annotations and prints them out as a
-"file".}
+读入符号和annotation的表，将其打印为“文件”。}
 
-Sample session: set teachpack to @filepath{docs.rkt} and click Run:
+示例会话：将教学包设为“docs.rkt”并单击“运行”：
 @(begin
 #reader scribble/comment-reader
 (racketblock
