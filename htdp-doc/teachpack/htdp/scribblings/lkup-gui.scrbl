@@ -2,22 +2,22 @@
 
 @(require scribble/manual "shared.rkt" (for-label racket teachpack/htdp/lkup-gui))
 
-@teachpack["lkup-gui"]{Lookup GUI}
+@teachpack["lkup-gui"]{查找GUI}
 
 @defmodule[#:require-form beginner-require htdp/lkup-gui]
 
-The teachpack provides three functions:
+本教学包提供三个函数：
 
 @defproc[(control [index natural-number?]) symbol?]{
- reads out the @racket[index]th guess choice, starting with 0}
+ 读出第@racket[index]个猜测选项，从0开始计数}
 
 @defproc[(view [msg (or/c string? symbol?)]) true/c]{
- displays its @racket[msg] argument in the message panel}
+ 在消息面板（message panel）中显示@racket[msg]参数}
 
 @defproc[(connect [event-handler (-> button% event% true/c)]) true/c]{
- connects a controller (@racket[handler]) with the Check button displays frame}
+ 连接控制函数（@racket[handler]）和Check按钮}
 
-Example:
+例如：
 @;%
 @(begin
 #reader scribble/comment-reader
@@ -27,4 +27,4 @@ Example:
    (view (control))))
 ))
 @;%
-This example simply mirrors what the user types in to the message field.
+这个例子简单地显示用户键入消息字段（message field）的内容。
