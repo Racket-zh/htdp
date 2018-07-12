@@ -15,25 +15,23 @@
 
 @; -----------------------------------------------------------------------------
 
-@title{Planet Cute Images}
+@title{Planet Cute图像}
 
 @defmodule[2htdp/planetcute]
 
 @(define pc-eval (make-base-eval))
 @(interaction-eval #:eval pc-eval (require 2htdp/image 2htdp/planetcute racket/list))
 
-The @racketmodname[2htdp/planetcute] library contains the 
-@link["http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html"]{Planet Cute} 
-art by Daniel Cook (Lostgarden.com).
+@racketmodname[2htdp/planetcute]库包含了Daniel Cook
+(Lostgarden.com)的@link["http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html"]{Planet Cute}艺术。
 
-The images are designed to be overlaid with each other to build
-scenes for use in games. Here is an example image taken
-from the Planet Cute website.
+这些图像被设计成能彼此重叠的，可以用于构建游戏的场景。
+下面是Planet Cute网站上的示例图片。
 
 @racketblock+eval[#:eval 
                   pc-eval
                   (code:comment "stack : non-empty-list-of-images -> image")
-                  (code:comment "stacks 'imgs' on each other, separated by 40 pixels")
+                  (code:comment "将'imgs'堆叠起来，彼此相隔40个像素")
                   (define (stack imgs)
                     (cond
                       [(empty? (rest imgs)) (first imgs)]
@@ -54,20 +52,28 @@ from the Planet Cute website.
 
 @(close-eval pc-eval)
 
-The Planet Cute images also include some shadows that can improve the
-look of your game; see the @secref["pc:Shadows"] section for an overview
-of how to use them.
+Planet Cute图像还包含一些阴影，可以用来改善游戏的外观；
+关于如何使用它们的概述，请参阅@secref["pc:Shadows"]部分。
 
 @(require (for-syntax 2htdp/private/planetcute-image-list))
+@(define-for-syntax (translate str)
+   (case str
+     ((Characters) "人物")
+     ((Blocks) "方块")
+     ((Items) "物品")
+     ((Ramps) "斜坡")
+     ((Buildings) "房屋")
+     ((Shadows) "阴影")))
 @(define-syntax (defthings stx)
    (syntax-case stx ()
      [(_ what whatever ...)
       (identifier? #'what)
       (let* ([sym (syntax-e #'what)]
              [sec-title (symbol->string sym)]
+             [title-chinese (translate sym)]
              [these-images (cdr (assoc sym images))])
         #`(begin
-            @section[#:tag #,(format "pc:~a" sec-title) #,sec-title]
+            @section[#:tag #,(format "pc:~a" sec-title) #,title-chinese]
             whatever ...
             #,@(for/list ([img (in-list these-images)])
                  (define req (string->symbol (format "2htdp/planetcute/~a" (name->filename img))))
@@ -84,10 +90,7 @@ of how to use them.
 @defthings[Items]{}
 @defthings[Ramps]{}
 @defthings[Buildings]{}
-@defthings[Shadows]{The shadow images are intended to be
-                    overlaid on the other blocks when they
-                    appear in certain configurations, as
-                    detailed here.
+@defthings[Shadows]{阴影图像的目的是，当其他方块按这里所描述的排列时，叠加到它们之上。
                     
                     @(read-bitmap PlanetCuteShadow1.png) 
                     @(read-bitmap PlanetCuteShadow2.png)
