@@ -3,29 +3,23 @@
 @(require scribble/manual "shared.rkt"
           (for-label racket teachpack/htdp/elevator))
 
-@teachpack["elevator"]{Controlling an Elevator}
+@teachpack["elevator"]{控制电梯}
 
 @;declare-exporting[teachpack/htdp/elevator]
 @defmodule[#:require-form beginner-require htdp/elevator]
 
-The teachpack implements an elevator simulator.
+本教程包实现了一个电梯模拟器。
 
-It displays an eight-floor elevator and accepts mouse clicks from the user,
-which are translated into service demands for the elevator. 
+它显示一个八层楼的电梯，接受用户的鼠标点击，并将其转化为电梯的服务需求。
 
-@defproc[(run [NextFloor number?]) any/c]{Creates an elevator simulator
-that is controlled by @racket[NextFloor]. This function consumes the
-current floor, the direction in which the elevator is moving, and the
-current demands. From that, it computes where  to send the elevator next.} 
+@defproc[(run [NextFloor number?]) any/c]{创建由@racket[NextFloor]控制的电梯模拟器。
+该函数读入当前楼层、电梯移动的方向和当前需求。由此，它计算出电梯下一步的位置。} 
 
-Example: Define a function that consumes the current state of
-the elevator (three arguments) and returns a number between 1 and 8. Here
-is a non-sensical definition:
+例如：定义函数，它读入电梯的当前状态（三个参数），返回1到8之间的数字。这是一个无意义的定义：
 
 @racketblock[(define (controller x y z) 7)]
 
-It moves the elevator once, to the 7th floor.
+它将电梯一次移动到7楼。
 
-Second, set the teachpack to @filepath{elevator.rkt}, click Run, and
-evaluate
+接下来，将教程包设置为@filepath{elevator.rkt}，单击“运行”，然后计算
 @racketblock[(run controller)]
