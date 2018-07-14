@@ -101,7 +101,7 @@
 以下函数允许程序对画布中的事件做出反应。
 
 @defproc[(big-bang [n number?] [w (unsyntax @tech{DrawWorld})]) true]{开始计时，
-每@racket[n]（分之一）秒钟一次；@racket[w]是第一个“当前”世界。}
+每@racket[n]（可以是分数）秒钟一次；@racket[w]是第一个“当前”世界。}
 
 @defproc[(on-key-event [change (-> (unsyntax @tech{DrawKeyEvent}) (unsyntax @tech{DrawWorld}) (unsyntax @tech{DrawWorld}))])
 true]{将@racket[change]加到世界中。该函数对键盘事件做出反应并创建新的@racket[@#,tech{DrawWorld}]。}
