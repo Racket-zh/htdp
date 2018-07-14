@@ -232,63 +232,63 @@
     @interaction[#:eval (asl) b (box? b) (box? 42)]
     }) 
    
-   ("哈希表"
+   ("散列表"
     @defproc[((advanced-make-hash make-hash)) (hash X Y)]{
-    用可选的输入——映射的表——创建可变哈希表，其中使用equal?进行比较。
+    用可选的输入——映射的表——创建可变散列表，其中使用equal?进行比较。
     @interaction[#:eval (asl)
       (make-hash)
       (make-hash '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[((advanced-make-hasheq make-hasheq)) (hash X Y)]{
-    用可选的输入——映射的表——创建可变哈希表，其中使用eq?进行比较。
+    用可选的输入——映射的表——创建可变散列表，其中使用eq?进行比较。
     @interaction[#:eval (asl)
       (make-hasheq)
       (make-hasheq '((b 69) (e 61) (i 999)))
       ] 
     } 
     @defproc[((advanced-make-hasheqv make-hasheqv)) (hash X Y)]{
-    用可选的输入——映射的表——创建可变哈希表，其中使用eqv?进行比较。
+    用可选的输入——映射的表——创建可变散列表，其中使用eqv?进行比较。
     @interaction[#:eval (asl)
       (make-hasheqv)
       (make-hasheqv '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[((advanced-make-immutable-hash make-immutable-hash)) (hash X Y)]{
-    用可选的输入——映射的表——创建不可变哈希表，其中使用equal?进行比较。
+    用可选的输入——映射的表——创建不可变散列表，其中使用equal?进行比较。
     @interaction[#:eval (asl)
       (make-immutable-hash)
       (make-immutable-hash '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[((advanced-make-immutable-hasheq make-immutable-hasheq)) (hash X Y)]{
-    用可选的输入——映射的表——创建不可变哈希表，其中使用eq?进行比较。
+    用可选的输入——映射的表——创建不可变散列表，其中使用eq?进行比较。
     @interaction[#:eval (asl)
       (make-immutable-hasheq)
       (make-immutable-hasheq '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[((advanced-make-immutable-hasheqv make-immutable-hasheqv)) (hash X Y)]{
-    用可选的输入——映射的表——创建不可变哈希表，其中使用eqv?进行比较。
+    用可选的输入——映射的表——创建不可变散列表，其中使用eqv?进行比较。
     @interaction[#:eval (asl)
       (make-immutable-hasheqv)
       (make-immutable-hasheqv '((b 69) (e 61) (i 999)))
       ]
     } 
     @defproc[(hash-set! [h (hash X Y)] [k X] [v Y]) void?]{
-    用新映射更新可变哈希表。
+    用新映射更新可变散列表。
     @interaction[#:eval (asl) hsh (hash-set! hsh 'a 23) hsh]
     } 
     @defproc[(hash-set  [h (hash X Y)] [k X] [v Y]) (hash X Y)]{
-    构造新的不可变哈希表，在原有不可变哈希表中加入新映射。
+    构造新的不可变散列表，在原有不可变散列表中加入新映射。
     @interaction[#:eval (asl) (hash-set ish 'a 23)]
     } 
     @defproc[(hash-ref  [h (hash X Y)] [k X]) Y]{
-    从哈希表中提取键值所关联的值；第三个可选参数可以提供默认值，或者计算默认值。
+    从散列表中提取键值所关联的值；第三个可选参数可以提供默认值，或者计算默认值。
     @interaction[#:eval (asl) hsh (hash-ref hsh 'b)]
     } 
     @defproc[(hash-ref! [h (hash X Y)] [k X] [v Y]) Y]{
-    从哈希表中提取键值所关联的值；如果键值没有被关联，使用第三个参数的值（或其计算所得的值），并将此值插入哈希表中（关联到给定的键值）。
+    从散列表中提取键值所关联的值；如果键值没有被关联，使用第三个参数的值（或其计算所得的值），并将此值插入散列表中（关联到给定的键值）。
     @interaction[#:eval (asl) hsh (hash-ref! hsh 'd 99) hsh]
     } 
     @defproc[(hash-update! [h (hash X Y)] [k X] [f (Y -> Y)]) void?]{
@@ -300,7 +300,7 @@
     @interaction[#:eval (asl) (hash-update ish 'b (lambda (old-b) (+ old-b 1)))]        
     } 
     @defproc[(hash-has-key? [h (hash X Y)] [x X]) boolean]{
-    判断键值是否在哈希表中关联于某个映射值。
+    判断键值是否在散列表中关联于某个映射值。
     @interaction[#:eval (asl)
       ish
       (hash-has-key? ish 'b)
@@ -308,49 +308,49 @@
       (hash-has-key? hsh 'd)]
     } 
     @defproc[(hash-remove! [h (hash X Y)] [x X]) void]{
-    从可变哈希表中删除映射。
+    从可变散列表中删除映射。
     @interaction[#:eval (asl)
       hsh
       (hash-remove! hsh 'r)
       hsh]
     } 
     @defproc[(hash-remove [h (hash X Y)] [k X]) (hash X Y)]{
-    构造新的不可变的哈希表，在原有不可变哈希表中减去一个映射。
+    构造新的不可变的散列表，在原有不可变散列表中减去一个映射。
     @interaction[#:eval (asl)
       ish
       (hash-remove ish 'b)]
     } 
     @defproc[(hash-map [h (hash X Y)] [f (X Y -> Z)]) (listof Z)]{
-    将函数应用于哈希表中的每个映射对，构造新的链表。
+    将函数应用于散列表中的每个映射对，构造新的链表。
     @interaction[#:eval (asl)
       ish
       (hash-map ish list)]
     } 
     @defproc[(hash-for-each [h (hash X Y)] [f (X Y -> any)]) void?]{
-    将函数应用于哈希表中的每个映射对，仅取效果。
+    将函数应用于散列表中的每个映射对，仅取效果。
     @interaction[#:eval (asl)
       hsh
       (hash-for-each hsh (lambda (ky vl) (hash-set! hsh ky (+ vl 1))))
       hsh]
     } 
     @defproc[(hash-count [h hash]) integer]{
-    求哈希表中映射键值的数量。
+    求散列表中映射键值的数量。
     @interaction[#:eval (asl)
       ish
       (hash-count ish)]
     } 
     @defproc[(hash-copy [h hash]) hash]{
-    复制哈希表。
+    复制散列表。
     } 
     @defproc[(hash? [x any]) boolean]{
-    判断值是否为哈希表。
+    判断值是否为散列表。
     @interaction[#:eval (asl)
       ish
       (hash? ish)
       (hash? 42)]
     } 
     @defproc[(hash-equal? [h hash?]) boolean]{
-    判断哈希表是否使用equal?进行比较。
+    判断散列表是否使用equal?进行比较。
     @interaction[#:eval (asl)
       ish
       (hash-equal? ish)
@@ -359,7 +359,7 @@
       ]
     } 
     @defproc[(hash-eq? [h hash]) boolean]{
-    判断哈希表是否使用eq?进行比较。
+    判断散列表是否使用eq?进行比较。
     @interaction[#:eval (asl)
       hsh
       (hash-eq? hsh)
@@ -368,7 +368,7 @@
       ]
     } 
     @defproc[(hash-eqv? [h hash]) boolean]{
-    判断哈希表是否使用eqv?进行比较。
+    判断散列表是否使用eqv?进行比较。
     @interaction[#:eval (asl)
       heq
       (hash-eqv? heq)
