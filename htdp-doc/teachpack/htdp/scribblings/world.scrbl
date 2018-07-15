@@ -17,7 +17,7 @@
 请参阅@secref[#:tag-prefixes '("2htdp")]{htdp-port}}
 
 @emph{注意}：要快速从教育角度理解本教学包，
-请参阅@link["http://www.ccs.neu.edu/home/matthias/HtDP/Prologue/book.html"]{《程序设计方法（第二版）》的序言}。
+请参阅@link["http://www.htdp.org/2018-01-06/Book/part_prologue.html"]{《程序设计方法（第二版）》的序言}。
 2008年8月，我们还编写了一本小册子@link["http://world.cs.brown.edu/"]{How to Design Worlds}，其中包含一系列项目。
 
 本文档的目的，是为经验丰富的Racketer们提供有关使用该库、并将其用到其他地方的简明概述。
