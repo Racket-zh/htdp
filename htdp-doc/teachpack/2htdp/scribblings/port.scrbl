@@ -11,22 +11,18 @@
 
 @; -----------------------------------------------------------------------------
 
-@title[#:tag "htdp-port"]{Porting World Programs to Universe}
+@title[#:tag "htdp-port"]{移植世界程序到宇宙}
 
-@author{Matthias Felleisen, Robby Findler}
+@author["Matthias Felleisen" "Robby Findler" "Racket-zh项目组译"]
 
 @; -----------------------------------------------------------------------------
-@section{The World is Not Enough}
+@section{世界还不够}
 
-With the June 2009 release, we started deprecating the world teachpack; instead
- we recommended the use of the universe teachpack. With the January 2010 release,
- we are also introducing a new image teachpack and, in support of this second
- teachpack, we have separated out the image functionality from the
- functionality for world programs. 
+随着2009年6月的发布，我们开始弃用world教学包；取代其功能，我们推荐universe教学包。
+随着2010年1月的发布，我们还推出了新的image教学包，为了支持这第二个教学包，我们将图像功能与世界程序的功能区分开。
 
-In this document, we explain how to port programs that assume the old world
- teachpack into this new setting, one step at a time. Most importantly,
- programs must now import @emph{two} teachpacks insteead of one: 
+本文档解释如何将旧的世界教学包程序移植到此新设置中，一步一步进行。
+最重要的是，程序现在必须import@emph{两个}教学包而不再是一个：
 @port[
 @(begin
 #reader scribble/comment-reader
@@ -38,29 +34,22 @@ In this document, we explain how to port programs that assume the old world
 #reader scribble/comment-reader
 (racketblock
 (require #,(racketmodname 2htdp/universe))
-(require #,(racketmodname htdp/image))
+(require #,(racketmodname 2htdp/image))
 ))
 ]
- The table shows the old style on the left and the new style on the
- right. If your programs imported teachpacks via the drscheme teachpack
- menu, we recommend that you use the @racket[require] form from now on; 
- alternatively, you use the drscheme menu @emph{twice} to import the 
- functions from two teachpacks. 
+表的左侧显示的旧的形式，右侧显示新形式。如果你的程序通过drscheme中教学包菜单导入教学包，
+我们建议从现在开始使用@racket[require]形式；或者，可以使用drscheme菜单@emph{两次}，导入两个教学包。
 
-In the next section, we first explain how to port world programs so that
- they use the universe teachpack and the @emph{old} image teachpack. In the
- section after that, we list suggestions for changing programs so that they
- no longer rely on the old image functionality but the new one. 
+在下一节中，我们先解释如何移植世界程序，以便他们使用universe教学包和旧的image教学包。
+在之后一节中，我们给出更改程序的建议，以便它们不再依赖@emph{旧的}图像函数，而是使用新图像函数。
 
-In order to distinguish between the various pieces of functionality, we
- uniformly prefix old functionality with "htdp:" and new functionality with
- "2htdp:". There is no need to use these prefixes in your programs of
- course. 
+为了区分不同的函数，我们在旧函数前统一添加前缀“htdp：”，在新函数前添加“2htdp：”。
+当然，你的程序中不需要使用这些前缀。
 
 @; -----------------------------------------------------------------------------
-@section{Porting World Programs}
+@section{世界程序的移植}
 
-Here is the first program from the documentation for the world teachpack:
+这是world教学包文档中的第一个程序：
 @(begin
 #reader scribble/comment-reader
 (racketblock
@@ -78,26 +67,20 @@ Here is the first program from the documentation for the world teachpack:
     (htdp:circle 10 'solid 'red)
     (htdp:rectangle 40 4 'solid 'red)))
 
-;; --- run program run 
+;; ——运行程序
 (htdp:big-bang 100 100 (/1 28) 0)
 (htdp:on-tick-event add1)
 (htdp:on-redraw create-UFO-scene)
 ))
- This program defines a function for placing a @racket[UFO] into a 100 by
- 100 scene, where @racket[UFO] is a defined image. The world program itself
- consists of three lines: 
+这个程序定义了函数将@racket[UFO]置于100乘100场景中，其中@racket[UFO]被定义为图像。
+世界程序本身由三行组成：
 @itemize[
-@item{the first one creates the 100 by 100 scene, specifies a rate of 28
- images per second, and @racket[0] as the initial world description;}
-@item{the second one says that for each clock tick, the world (a number) is
- increased by @racket[1]; and}
-@item{the last line tells drscheme to use @racket[create-UFO-scene] as the
- function that renders the current world as a scene.}
+@item{第一行创建100乘100的场景，指定每秒28幅图像的速率，以及@racket[0]为初始世界描述；}
+@item{第二行说，对于每个时钟滴答，世界（数值）加1；}
+@item{最后一行告诉drscheme，使用@racket[create-UFO-scene]函数将当前世界呈现为场景。}
 ]
 
-Let us now convert this program into the universe setting, step by
- step, staring with the @racket[require] specification, which is converted
- as above: 
+现在让我们一步一步地将此程序转换为使用universe的，从前面说过的@racket[require]规范开始：
 @port[
 @racketblock[(require #,(racketmodname htdp/world))]
 @; ---------------------------------
@@ -109,7 +92,7 @@ Let us now convert this program into the universe setting, step by
 ))
 ]
 
-The function that renders the world as a scene remains the same: 
+将世界呈现为场景的函数保持不变：
 @port[
 @(begin
 #reader scribble/comment-reader
@@ -134,7 +117,7 @@ The function that renders the world as a scene remains the same:
 ))
 ]
 
-For the image constant we switch from symbols to strings: 
+图像常量从符号变为字符串：
 @port[
 @(begin
 #reader scribble/comment-reader
@@ -160,11 +143,9 @@ For the image constant we switch from symbols to strings:
      40 4 "solid" "red")))
 ))
 ]
- Strictly speaking, this isn't necessary, but we intend to replace symbols
- with strings whenever possible because strings are more common than
- symbols. 
+严格说来，这不是必需的，但我们打算尽可能将符号替换为字符串，因为字符串比符号更常见。
 
-The most important change concerns the lines that launch the world program: 
+最重要的变化是启动世界程序的几行：
 @port[
 @racketblock[
 (htdp:big-bang 100 100 (/1 28) 0)
@@ -179,20 +160,13 @@ The most important change concerns the lines that launch the world program:
   (on-draw create-UFO-scene))
 ]
 ]
- They are turned into a single expression that comes with as many clauses
- as there are lines in the old program. As you can see, the
- @racket[big-bang] expression from the universe teachpack no longer
- requires the specification of the size of the scene or the rate at which
- the clock ticks (though it is possible to supply the clock rate if the default
- is not satisfactory). 
- Furthermore, the names of the clauses are similar to
- the old names but shorter. 
+它们被转换为单个表达式，其中包含与旧程序中的行数一样多的子句。正如你所看到的，
+universe教学包中的@racket[big-bang]表达不再需要指定场景大小或时钟滴答的速率（当然如果对默认值不满意也可以提供时钟速率）。
+此外，这些子句的名称与旧名称相似，但更短。
 
 
-The other big change concerns key event handling and mouse event
- handling. The respective handlers no longer accept symbols and chars but
- strings only. Here is the first key event handler from the documentation
- of the world teachpack: 
+另一个重大变化涉及键盘和鼠标事件的处理。各个处理程序不再接受符号和字符，而只接受字符串。
+world教学包的文档中的第一个键盘事件处理程序是：
 
 @port[
 @racketblock[
@@ -227,30 +201,22 @@ The other big change concerns key event handling and mouse event
      [else
       w]))
 ]]
- Note how the @racket[char?] clause changed. Since all chars are now
- represented as strings containing one ``letter'', the program on the right
- just checks the length of the string. Otherwise, we simply change all
- symbols into strings. 
+注意@racket[char?]子句的改变。由于现在所有字符都表示为包含一个“字母”的字符串，
+因此右侧的程序只需检查字符串的长度。除此之外，我们简单地将所有符号更改为字符串。
 
-If you ever recorded your programs' work via an animated gif, you can still
- do so. Instead of adding a fifth argument to @racket[big-bang], however,
- you will need to add a clause of the shape @racket[(record? x)]. 
+如果你用过动画gif录制程序的运行，现在仍可以这样做。
+但做法不再是向@racket[big-bang]添加第五个参数，而是添加形如@racket[(record? x)]的子句。
 
-Finally, the universe teachpack implements a richer functionality than the
- world teachpack. 
+最后，universe教学包实现了比world教学包更丰富的功能。
 
 @; -----------------------------------------------------------------------------
-@section{Porting Image Programs}
+@section{图像程序的移植}
 
-The universe library also comes with a new image library, @racketmodname[2htdp/image].
-Using the old image
-library still works fine with @racketmodname[2htdp/universe], but the
-new image library provides a number of improvements, including faster 
-image comparison (especially useful in @racket[check-expect] expressions),
-rotating images, scaling images, curves, a number of new polygon shapes,
-and more control over line drawing.
+universe库还带来了新的图像库，@racketmodname[2htdp/image]。旧的图像库仍然可以协同@racketmodname[2htdp/universe]正常使用，
+但新图像库提供了许多改进，包括更快的图像比较（特别适用于@racket[check-expect]表达式）、图像旋转、图像缩放、曲线、新的多边形，
+以及对线条绘制的更多控制。
 
-To use the new image library in isloation:
+要单独使用新图像库：
 
 @port[
 @(begin
@@ -266,7 +232,7 @@ To use the new image library in isloation:
 ))
 ]
 
-and to use the new image library with the universe teachpack:
+和universe教学包一起使用新图像库：
 
 @port[
 @(begin
@@ -282,12 +248,10 @@ and to use the new image library with the universe teachpack:
 (require #,(racketmodname 2htdp/image))
 ))]
   
-@bold{Overlay vs Underlay}
+@bold{Overlay与Underlay}
 
-The @racket[htdp:overlay] function places its first argument
-under its second (and subsequent) arguments and so in 
-@racketmodname[2htdp/image], we decided to call that
-function @racket[2htdp:underlay].
+@racket[htdp:overlay]函数将其第一个参数放在第二个（及后续）参数之下，
+所以在@racketmodname[2htdp/image]中我们决定将其称为@racket[2htdp:underlay]。
 
 @port[(racketblock
        (htdp:overlay
@@ -302,28 +266,18 @@ function @racket[2htdp:underlay].
         (2htdp:rectangle
          20 10 "solid" "blue")))]
 
-@bold{No more pinholes}
+@bold{没有pinhole了}
 
-The concept of pinholes from @racketmodname[htdp/image]
-has no correspondance in @racketmodname[2htdp/image] 
-(we do expect to bring back pinholes in @racketmodname[2htdp/image]
-eventually, but they will not be as pervasive as they are
-in @racket[htdp/image]).
+@racketmodname[htdp/image]中pinhole概念在@racketmodname[2htdp/image] 中没有对应物
+（我们确实希望最终在@racketmodname[2htdp/image]中加入pinhole，但它们不会像在@racket[htdp/image]中那样普遍）。
 
-Instead of 
-a special position in the image that overlay operations
-are sensitive to, 
-@racketmodname[2htdp/image] has a family of overlay operations,
-that overlay images based on their centers or their edges.
+@racketmodname[2htdp/image]包含了一系列overlay操作，
+它们不是对图像中的特殊位置叠加，而是根据其中心或边缘叠加图像。
 
-Since the default position of the pinhole is in the center
-for most images and the default for overlaying and underlaying
-images in @racket[2htdp/image] is based on the center, 
-simple examples (like the one above) behave the same
-in both libraries.
+由于pinhole的默认位置在大多数图像的中心，同时@racket[2htdp/image]中overlay和underlay图像默认值基于大部分图像的中心，
+因此简单的例子（如前所述）在两个库中表现相同。
 
-But, consider this expression that overlays two images on
-their upper-left corners, written using both libraries.
+但是，考虑这个表达式，它按左上角overlay两个图像，分别使用两个库编写。
 
 @port[@racketblock[(htdp:overlay
                     (htdp:put-pinhole
@@ -340,27 +294,21 @@ their upper-left corners, written using both libraries.
                     (2htdp:rectangle
                      20 10 "solid" "blue"))]]
 
-In the @racketmodname[2htdp/image] version, the programmer
-uses @racket[2htdp:underlay/align] to specify where
-the images should be lined up, instead of using the pinhole.
+在@racketmodname[2htdp/image]的版本中，程序使用@racket[2htdp:underlay/align]指定对齐图像的位置，而不是使用pinhole。
 
-@bold{Outlines in different places}
+@bold{边框位置的不同}
 
-The outline style shapes are now shifted by one pixel for @racketmodname[2htdp/image]
-images as compared to @racketmodname[htdp/image].
-This means that these two rectangles draw the same sets of pixels.
+和@racketmodname[htdp/image]相比，@racketmodname[2htdp/image]中边框的图形移动了一个像素。
+这意味着下面两个矩形绘制出相同的像素集合。
 
 @port[@racketblock[(htdp:rectangle 
                     11 11 "outline" "black")]
       @racketblock[(2htdp:rectangle
                     10 10 "outline" "black")]]
 
-See also @secref["nitty-gritty"].
+参见@secref["nitty-gritty"]。
 
-@bold{Star changed}
+@bold{Star变了}
 
-The @racket[2htdp:star] function is a completely different
-function from @racket[htdp:star]. Both produce stars based, 
-on polygons, but @racket[2htdp:star] always produces a five-pointed
-star. See also @racket[2htdp:star-polygon] for more general star
-shapes.
+@racket[2htdp:star]函数和@racket[htdp:star]完全不同。两者都是以多边形为基础的星形，
+但@racket[2htdp:star]总是五角星。另请参见@racket[2htdp:star-polygon]获得更一般的星形。

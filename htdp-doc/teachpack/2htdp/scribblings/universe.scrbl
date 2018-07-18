@@ -100,7 +100,7 @@ DrRacket都会将@racket[create-image]应用于自@racket[animate]函数调用�
 @defproc[(run-simulation [create-image (-> natural-number/c scene?)])
          natural-number/c]{
 @note-scene
- @racket[animate]最初被称为@racket[run-simulation]，为了向后兼容性改名字也被保留。}
+ @racket[animate]最初被称为@racket[run-simulation]，为了向后兼容性该名字也被保留。}
 
 @defproc[(run-movie [r (and/c real? positive?)] [m [Listof image?]])
          [Listof image?]]{
@@ -734,7 +734,7 @@ DrRacket都会将@racket[create-image]应用于自@racket[animate]函数调用�
 用@tech{世界}程序模拟任何动态行为都需要完成两件不同的事。首先，
 我们必须梳理出领域中随时间变化或对行动做出反应的那些部分，并为这些信息开发数据表示。
 这就是我们所说的@|WorldState|。请记住，良好的数据定义可以使阅读者轻松地将数据映射到现实世界中的信息，
-或者将现实世界中的信息映射为数据。对于世界的所有其他方面， 我们使用全局常量，包括渲染函数中需要用到的图形或图像常量。
+或者将现实世界中的信息映射为数据。对于世界的所有其他方面，我们使用全局常量，包括渲染函数中需要用到的图形或图像常量。
 
 其次，我们必须将领域中的操作——上图中的箭头——转换universe教学包可以处理的计算机的交互。
 一旦决定用时间表示一个方面、用按键表示另一个方面、用鼠标移动表示第三个方面，
