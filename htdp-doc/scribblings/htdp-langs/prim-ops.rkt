@@ -91,7 +91,7 @@
     (typeset-type (cadr func)))))
 
 (define-syntax-rule
-  (prim-variables (section-prefix) empty true false ..2 ..3 ..4 ..5 ..6)
+  (prim-variables (section-prefix) empty true false dot ...)
   ;; ===> 
   (make-splice
    (list
@@ -107,12 +107,7 @@
       @code{#false}值。}
 
     @section[#:tag (string-append section-prefix " Template Variables")]{模板变量}
-    @; MF: I tried abstracting but I failed
-    @defidform[..2]{表明定义是模版的占位符。}
-    @defidform[..3]{表明定义是模版的占位符。}
-    @defidform[..4]{表明定义是模版的占位符。}
-    @defidform[..5]{表明定义是模版的占位符。}
-    @defidform[..6]{表明定义是模版的占位符。}
+    @defidform[dot]{表明定义是模版的占位符。} ...
     )))
 
 ;; ----------------------------------------
