@@ -107,7 +107,7 @@
       @code{#false}值。}
 
     @section[#:tag (string-append section-prefix " Template Variables")]{模板变量}
-    @defidform[dot]{表明定义是模版的占位符。} ...
+    @defidform[dots]{表明定义是模版的占位符。} ...
     )))
 
 ;; ----------------------------------------
