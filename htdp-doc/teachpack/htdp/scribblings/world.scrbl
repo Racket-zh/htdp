@@ -29,7 +29,7 @@
 @; -----------------------------------------------------------------------------
 @section[#:tag "simulations"]{简单的模拟}
 
-@defproc[(run-movie [r (and/c real? positive?)] [m [Listof image?]]) 
+@defproc[(run-movie [r (and/c real? positive?)] [m [Listof image?]])
          true]{
 
  @racket[run-movie]以每秒@racket[r]个图像的速率、显示图像的表@racket[m]。}
@@ -92,7 +92,7 @@
 
 @defproc[(on-tick-event [tock (-> (unsyntax @tech{World}) (unsyntax @tech{World}))]) true]{
 每当时钟滴答时，告诉@racket[big-bang]对当前世界调用@racket[tock]。
-调用的的结果会成为新的当前世界。} 
+调用的的结果会成为新的当前世界。}
 
 @deftech{KeyEvent} @racket[(or/c char? symbol?)]
 
@@ -119,7 +119,7 @@
   (cond
     [(key=? a-key-event 'left)  (world-go w -DELTA)]
     [(key=? a-key-event 'right) (world-go w +DELTA)]
-    [(char? a-key-event) w] ;; to demonstrate order-free checking 
+    [(char? a-key-event) w] ;; to demonstrate order-free checking
     [(key=? a-key-event 'up)    (world-go w -DELTA)]
     [(key=? a-key-event 'down)  (world-go w +DELTA)]
     [else w]))
@@ -128,7 +128,7 @@
 }
 
 @deftech{MouseEvent} @racket[(one-of/c 'button-down 'button-up 'drag 'move 'enter 'leave)]
- 
+
 @tech{MouseEvent}表示鼠标事件，例如计算机用户移动或点击鼠标。
 
 @defproc[(on-mouse-event [clack (-> (unsyntax @tech{World}) natural-number/c natural-number/c (unsyntax @tech{MouseEvent}) (unsyntax @tech{World}))]) true]{
@@ -144,7 +144,7 @@
 告诉@racket[big-bang]，每当画布被重新绘制时调用@racket[last-world?]。
 如果此调用给出@racket[true]，就停止时钟；
 不再将滴答事件、@tech{KeyEvent}或@tech{MouseEvent}转发给相应的处理程序。
-因此，画布也不会再更新。} 
+因此，画布也不会再更新。}
 
 例子：以下示例表明，@racket[(run-simulation 100 100
 (/ 1 28) create-UFO-scene)]是这三行代码的简写：
@@ -176,7 +176,7 @@
                  #;(map flow* (map cadr stuff))))))
 
 @; -----------------------------------------------------------------------------
-@section[#:tag "example"]{第一个例子} 
+@section[#:tag "example"]{第一个例子}
 
 
 @subsection{对门的理解}
@@ -230,7 +230,7 @@
 (define (click w x y me) ...)
 
 ;; control : @tech{D} @tech{KeyEvent} -> @tech{D}
-;; 处理当前世界@racket[w]中的键盘事件（symbol、char）@racket[ke] 
+;; 处理当前世界@racket[w]中的键盘事件（symbol、char）@racket[ke]
 (define (control w ke) ...)
 ))
 
@@ -355,7 +355,7 @@
 
 @table*[
 	@list[@t{ 输入状态 } @t{ 输入键盘事件 } @t{ 输出状态 }]
- 
+
 @list[ @t{  'locked } @t{ #\u    } @t{ 'closed}]
 @list[ @t{  'closed } @t{ #\l    } @t{ 'locked} ]
 @list[ @t{  'closed } @t{ #\space} @t{ 'open } ]
@@ -364,7 +364,7 @@
 这些例子结合了上图所示的内容，以及我们将操作映射到键盘事件时所做的选择。
 
 接下来将其转变为完整的设计很简单：
- 
+
 @racketblock[
 (define (door-actions s k)
   (cond
@@ -408,5 +408,5 @@
 (on-key-event door-actions)
 (on-redraw render)
 ))
- 
+
 现在轮到你来收集这些片段，然后用@racket[big-bang]运行它们以确定是否全部有效。

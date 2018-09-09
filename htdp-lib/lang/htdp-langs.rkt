@@ -221,6 +221,10 @@
                                 [(signature? val)
                                  (or (signature-name val)
                                      '<signature>)]
+				[(bytes? val)
+				 (if (< (bytes-length val) 100)
+				     val
+				     (bytes-append (subbytes val 0 99) #"... truncated"))]
                                 [else (ph val basic sub)])))]
                          [pretty-print-show-inexactness #t]
                          [pretty-print-exact-as-decimal #t]
@@ -265,15 +269,15 @@
              ;; then adjust the settings for the teaching languages
              (set-printing-parameters
               settings
-              (λ () 
-                (let-values ([(converted-value write?)
-                              (call-with-values
-                               (lambda ()
-                                 (drscheme:language:simple-module-based-language-convert-value
-                                  value settings))
-                               (case-lambda
-                                 [(converted-value) (values converted-value #t)]
-                                 [(converted-value write?) (values converted-value write?)]))])
+              (λ ()
+                (let*-values ([(converted-value write?)
+                               (call-with-values
+                                (lambda ()
+                                  (drscheme:language:simple-module-based-language-convert-value
+                                   value settings))
+                                (case-lambda
+                                  [(converted-value) (values converted-value #t)]
+                                  [(converted-value write?) (values converted-value write?)]))])
                   (let ([pretty-out (if write? pretty-write pretty-print)])
                     (cond
                       [(drscheme:language:simple-settings-insert-newlines settings)

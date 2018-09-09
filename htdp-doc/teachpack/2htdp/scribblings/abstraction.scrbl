@@ -4,13 +4,13 @@
           (for-label
 	    teachpack/2htdp/abstraction
 	    (only-in lang/htdp-beginner require check-expect explode implode)
-	    (except-in racket 
+	    (except-in racket
               require match
-	      for/list for/or for/and for/sum for/product 
+	      for/list for/or for/and for/sum for/product
 	      for*/list for*/or for*/and for*/sum for*/product
 	      in-range in-naturals
 	      )
-	    ))	
+	    ))
 
 @; ---------------------------------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
 ]
 }
 
-@defform[#:id for*/list 
+@defform[#:id for*/list
          (for*/list (comprehension-clause comprehension-clause ...) body-expr)]{
  使用@bold{嵌套的}@racket[comprehension-clause]们提供的值的序列计算@racket[body-expr]。
 
@@ -185,9 +185,9 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
  使用@racket[implode]收集@racket[body-expr]求值所得的单字符字符串。
 
 @interaction[
-#:eval 
-(make-base-eval 
-  '(require 2htdp/abstraction 
+#:eval
+(make-base-eval
+  '(require 2htdp/abstraction
             (only-in lang/htdp-beginner string->int int->string)))
 (for/string ([i "abc"])
    (int->string (+ (string->int i) 1)))
@@ -199,9 +199,9 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
  使用@racket[implode]收集@racket[body-expr]求值所得的单字符字符串。
 
 @interaction[
-#:eval 
-(make-base-eval 
-  '(require 2htdp/abstraction 
+#:eval
+(make-base-eval
+  '(require 2htdp/abstraction
             (only-in lang/htdp-beginner string->int int->string)))
 (for*/string ([i "ab"][j (- (string->int i) 90)])
    (int->string (+ (string->int i) j)))
@@ -209,11 +209,11 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
 }
 
 @; -------------------------------------------------------
-@defproc*[([(in-range [start natural-number/c] 
+@defproc*[([(in-range [start natural-number/c]
 		      [end natural-number/c]
-		      [step natural-number/c]) 
+		      [step natural-number/c])
               sequence?]
-	   [(in-range [end natural-number/c]) 
+	   [(in-range [end natural-number/c])
 	      sequence?])]{
  生成@bold{有限}自然数序列。
 
@@ -221,7 +221,7 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
  序列就是@racket[start]、@racket[(+ start step)]、@racket[(+
  start step step)]、…直到总和大于或等于@racket[end]。
 
-@interaction[ 
+@interaction[
 (for/list ([i (in-range 1 10 3)]) i)
 ]
 
@@ -256,8 +256,8 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
 
 @defform/subs[#:id match
               (match case-expr (pattern body-expr) ...)
-              ([pattern 
-                 name 
+              ([pattern
+                 name
 	         literal-constant
                  (cons pattern pattern)
                  (name pattern ...)
@@ -276,17 +276,17 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
 @item{@racket[(cons pattern_1 pattern_2)]，它匹配@racket[cons]实例，
  并且其first/rest字段能和@racket[pattern_1]及@racket[pattern_2]匹配；}
 @item{@racket[(name pattern ...)]，它匹配@racket[name]结构体类型的实例，
- 并且其字段值能和@racket[pattern] ...匹配；} 
+ 并且其字段值能和@racket[pattern] ...匹配；}
 @item{@racket[(? name)]，如果@racket[name]是个谓词函数，并且它对给定的值返回@racket[#true]，
  那么匹配成功。}
 ]
  此外，如果给定的模式是@racket[name]、值是@racket[V]，
  那么在计算相应的@racket[body-expr]时，@racket[name]代表@racket[V]。
- 
+
 以下@racket[match]表达式将@racket[cons]第二个位置的@racket['()]和其他值区分开：
 @interaction[#:eval (make-base-eval '(require 2htdp/abstraction))
 (define (last-item l)
-   (match l 
+   (match l
      [(cons lst '()) lst]
      [(cons fst rst) (last-item rst)]))
 
@@ -296,7 +296,7 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
 使用@racket[?]，@racket[match]可以用谓词来区分任意值：
 @interaction[#:eval (make-base-eval '(require 2htdp/abstraction))
 (define (is-it-odd-or-even l)
-   (match l 
+   (match l
      [(? even?) 'even]
      [(? odd?)  'odd]))
 
@@ -309,7 +309,7 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
 (define-struct doll (layer))
 
 (define (inside a-doll)
-  (match a-doll 
+  (match a-doll
     [(? symbol?) a-doll]
     [(doll below) (inside below)]))
 
@@ -390,9 +390,9 @@ HtDP/2e在一独立章节中介绍了循环和匹配，其唯一目的是让学�
  这个函数定义使用了@racket[BTree]的@racket[type-case]，其中包含两个子句：
  一个用于@racket[leaf]，一个用于@racket[node]。该函数计算输入树的深度。
 
-@interaction[#:eval 
-(make-base-eval 
- '(require 2htdp/abstraction) 
+@interaction[#:eval
+(make-base-eval
+ '(require 2htdp/abstraction)
  '(define-type BTree (leaf (info number?)) (node (left BTree?) (right BTree?)))
  '(define (depth t)
     (type-case BTree t

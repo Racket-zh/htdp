@@ -21,7 +21,7 @@
     "slideshow-lib"
     "snip-lib"
     "srfi-lite-lib"
-    ["string-constants-lib" #:version "1.13"]
+    ["string-constants-lib" #:version "1.20"]
     "typed-racket-lib"
     "typed-racket-more"
     "web-server-lib"
@@ -31,7 +31,7 @@
     "pict-lib"))
 (define build-deps '("racket-index"
                      "at-exp-lib"
-                     "rackunit-lib"))
+                     ["rackunit-lib" #:version "1.10"]))
 
 (define pkg-desc "implementation (no documentation) part of \"htdp\"")
 

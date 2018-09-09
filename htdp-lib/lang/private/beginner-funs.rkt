@@ -1,33 +1,33 @@
-#lang at-exp racket 
+#lang at-exp racket
 
-;; weed out: string-copy, eqv?, struct? -- no need for beginners, move to advanced 
-;; eq? is questionable, but okay if someone uses BSL to teach not out of HtDP 
-;; 
+;; weed out: string-copy, eqv?, struct? -- no need for beginners, move to advanced
+;; eq? is questionable, but okay if someone uses BSL to teach not out of HtDP
+;;
 
 (require mzlib/etc mzlib/list mzlib/math syntax/docprovide
          (for-syntax "firstorder.rkt")
-         (for-syntax syntax/parse) 
+         (for-syntax syntax/parse)
          (for-syntax racket/syntax))
 
 ;; Implements the procedures:
 (require "teachprims.rkt" "teach.rkt" lang/posn lang/imageeq "provide-and-scribble.rkt")
 
 (define-syntax (provide-and-wrap stx)
-  (syntax-parse stx 
+  (syntax-parse stx
     ; (defproc (name args ...) range w ...)
     [(provide-and-wrap wrap doc-tag:id requires (title df ...) ...)
      (let* ((defs (map syntax->list (syntax->list #'((df ...) ...))))
             (names (map extract-names defs))
             (tmps  (map generate-temporaries names))
             (internals (map (lambda (x)
-                              (map (lambda (n) 
+                              (map (lambda (n)
                                      (syntax-parse n
                                        [(internal-name:id external-name:id) #'internal-name]
                                        [n:id #'n]))
                                    x))
                             names))
             (externals (map (lambda (x)
-                              (map (lambda (n) 
+                              (map (lambda (n)
                                      (syntax-parse n
                                        [(internal-name:id external-name:id) #'external-name]
                                        [n:id #'n]))
@@ -45,13 +45,13 @@
                                         #'(defthing name range w ...)]))
                                    d.. f.. ex..))
                             defs tmps externals)])
-         #'(begin ;; create two modules: 
-             ;; one that makes definitions first-order 
-             (module+ with-wrapper 
+         #'(begin ;; create two modules:
+             ;; one that makes definitions first-order
+             (module+ with-wrapper
                (wrap f internal-name) ... ...
                (provide-and-scribble doc-tag requires (title dg ...) ...))
              ;; and one that doesn't
-             (module+ without-wrapper 
+             (module+ without-wrapper
                (provide-and-scribble doc-tag requires (title df ...) ...)))))]))
 
 ;; MF: this is now an ugly kludge, left over from my original conversion of Matthew's docs for *SL
@@ -64,8 +64,8 @@
          ;; Some things are not really functions:
          [(memq (syntax-e orig) '(pi e null eof))
           #'(define new-name orig-name)]
-         [else 
-          #'(define-syntax new-name 
+         [else
+          #'(define-syntax new-name
               (make-first-order
                (lambda (stx)
                  (syntax-case stx ()
@@ -81,7 +81,7 @@
 (provide-and-wrap
  in-rator-position-only
  procedures
- 
+
  (begin
    (require scribble/manual scribble/eval "sl-eval.rkt")
    (define (bsl)
@@ -89,14 +89,14 @@
        (bsl+-eval
         [
  (define c1 (circle 10 "solid" "green"))
-        
+
  (define zero 0)
-        
+
  (define one (list 1))
-        
+
  (define q (make-posn "bye" 2))
  (define p (make-posn 2 -3))
-        
+
  (define a (list (list 'a 22) (list 'b 8) (list 'c 70)))
  (define v (list 1 2 3 4 5 6 7 8 9 'A))
  (define w (list (list (list (list "bye") 3) #true) 42))
@@ -106,11 +106,11 @@
  (define hello-2 (list 2 "hello" #true "hello"))]))
      (set! bsl (lambda () *bsl))
      *bsl))
- 
+
  ("数值：整数、有理数、实数、复数、精确数、非精确数"
   @defproc[(number? [n any/c]) boolean?]{
  确定某个值是否为数值：
- @interaction[#:eval (bsl) (number? "hello world") (number? 42)] 
+ @interaction[#:eval (bsl) (number? "hello world") (number? 42)]
 }
   @defproc[(= [x number][y number][z number] ...) boolean?]{
  比较数值相等。
@@ -122,7 +122,7 @@
 }
   @defproc[(> [x real][y real][z real] ...) boolean?]{
  比较（实）数大于。
- @interaction[#:eval (bsl) (> 42 2/5)]   
+ @interaction[#:eval (bsl) (> 42 2/5)]
 }
   @defproc[(<= [x real][y real][z real] ...) boolean?]{
  比较（实）数小于等于。
@@ -158,15 +158,15 @@
 }
   @defproc[(quotient [x integer][y integer]) integer]{
  将第一个整数（被除数）除以第二个整数（除数）来获得商@index[(list "divide" "quotient")]{商}。
- @interaction[#:eval (bsl) (quotient 9 2) (quotient 3 4)] 
+ @interaction[#:eval (bsl) (quotient 9 2) (quotient 3 4)]
 }
   @defproc[(remainder [x integer][y integer]) integer]{
  确定将第一个除以第二个整数（精确或不精确）的@index[(list "divide" "remainder")]{余数}。
- @interaction[#:eval (bsl) (remainder 9 2) (remainder 3 4)] 
-} 
+ @interaction[#:eval (bsl) (remainder 9 2) (remainder 3 4)]
+}
   @defproc[(modulo [x integer][y integer]) integer]{
  求第一个数字除以第二个数字的余数：
- @interaction[#:eval (bsl) (modulo 9 2) (modulo 3 -4)] 
+ @interaction[#:eval (bsl) (modulo 9 2) (modulo 3 -4)]
 }
   @defproc[((beginner-sqr sqr) [x number]) number]{
  计算一个数的@index["square"]{平方}。
@@ -187,9 +187,9 @@
   @defproc[(sgn [x real]) (union 1 #i1.0 0 #i0.0 -1 #i-1.0)]{
  求实数的符号。
  @interaction[#:eval (bsl) (sgn -12)]
-}		       
-  
-  ;; exponents and logarithms 
+}
+
+  ;; exponents and logarithms
   @defproc[(expt [x number][y number]) number]{
  计算第一个数的第二个数次幂。
  @interaction[#:eval (bsl) (expt 16 1/2) (expt 3 -4)]
@@ -202,7 +202,7 @@
  求一个数（以e为底）的对数。
  @interaction[#:eval (bsl) (log 12)]
 }
-  
+
   ;; trigonometry
   @defproc[(sin [x number]) number]{
  计算数的@index["sine"]{正弦}值（弧度）。
@@ -232,15 +232,15 @@
  @interaction[#:eval (bsl) (atan 3 4) (atan -2 -1)]
 }
   @defproc[(sinh [x number]) number]{
- 计算数的双曲正弦。 
+ 计算数的双曲正弦。
  @interaction[#:eval (bsl) (sinh 10)]
 }
   @defproc[(cosh [x number]) number]{
  计算数的双曲余弦。
  @interaction[#:eval (bsl) (cosh 10)]
 }
-  
-  ;; predicates 
+
+  ;; predicates
   @defproc[(exact? [x number]) boolean?]{
  判断某个数值是否精确。
  @interaction[#:eval (bsl) (exact? (sqrt 2))]
@@ -271,7 +271,7 @@
 }
   @defproc[(rational? [x any/c]) boolean?]{
  判断某个值是否为有理数。
- @interaction[#:eval (bsl) 
+ @interaction[#:eval (bsl)
               (rational? 1)
               (rational? -2.349)
               (rational? #i1.23456789)
@@ -293,8 +293,8 @@
  判断某个值是否是复数。
  @interaction[#:eval (bsl) (complex? 1-2i)]
 }
-  
-  ;; common utilities 
+
+  ;; common utilities
   @defproc[(add1 [x number]) number]{
  将给定的数值加一。
  @interaction[#:eval (bsl) (add1 2)]
@@ -337,15 +337,15 @@
 }
   @defproc[(make-rectangular [x real][y real]) number]{
  由实部和虚部创建复数。
- @interaction[#:eval (bsl) (make-rectangular 3 4)] 
+ @interaction[#:eval (bsl) (make-rectangular 3 4)]
 }
   @defproc[(real-part [x number]) real]{
  从复数中提取实部。
- @interaction[#:eval (bsl) (real-part 3+4i)] 
+ @interaction[#:eval (bsl) (real-part 3+4i)]
 }
   @defproc[(imag-part [x number]) real]{
- 从复数中提取虚部。 
- @interaction[#:eval (bsl) (imag-part 3+4i)] 
+ 从复数中提取虚部。
+ @interaction[#:eval (bsl) (imag-part 3+4i)]
 }
   @defproc[(magnitude [x number]) real]{
  求复数的绝对值。
@@ -393,7 +393,7 @@
   @defthing[pi real]{圆的周长与其直径的比率。
  @interaction[#:eval (bsl) pi]
  })
- 
+
  ("布尔值"
   @defproc[(boolean? [x any/c]) boolean?]{
  判断某个值是否为布尔值。
@@ -429,7 +429,7 @@
  将符号转换为字符串。
  @interaction[#:eval (bsl) (symbol->string 'c)]
  })
- 
+
  ("链表"
   @defproc[(cons? [x any/c]) boolean?]{
  判断某个值是否为cons构造的表。
@@ -459,12 +459,12 @@
  提取非空表的第三项。
  @interaction[#:eval (bsl) x (third x)]
 }
-  
+
   @defproc[(fourth [x list?]) any/c]{
  提取非空表的第四项。
  @interaction[#:eval (bsl) v (fourth v)]
 }
-  
+
   @defproc[(fifth [x list?]) any/c]{
  提取非空表的第五项。
  @interaction[#:eval (bsl) v (fifth v)]
@@ -545,8 +545,8 @@
  判断某个项是否是表中某个序对的第一项。（使用@racket[eq?]进行比较。）
  @interaction[#:eval (bsl) a (assq 'b a)]
 }
-  
-  
+
+
   ;; LISP-ish selectors:
   @defproc[(null? [x any/c]) boolean?]{
  判断某个值是否为空表。
@@ -619,7 +619,7 @@
  返回@racket[l]中第一个@racket[first]项@racket[equal?]于@racket[x]的序对；如果不存在这样的序对就返回@racket[#false]。
  @interaction[#:eval (bsl) (assoc "hello" '(("world" 2) ("hello" 3) ("good" 0)))]
 }
- 
+
   @defproc[((beginner-list? list?) [x any]) boolean?]{
  检查给定值是否为链表。
  @interaction[#:eval (bsl)
@@ -627,7 +627,7 @@
               (list? '())
               (list? (cons 1 (cons 2 '())))]}
   )
- 
+
  ("Posn"
   ; @defproc[(posn) signature]{Signature for posns.}
   @defproc[(make-posn [x any/c][y any/c]) posn]{
@@ -646,7 +646,7 @@
  提取posn的y分量。
  @interaction[#:eval (bsl) p (posn-y p)]
  })
- 
+
  ("字符"
   @defproc[(char? [x any/c]) boolean?]{
  判断值是否为字符。
@@ -724,7 +724,7 @@
  查找ASCII表中输入字符所对应的数值（如果有的话）。
  @interaction[#:eval (bsl) (char->integer #\a) (char->integer #\z)]
  })
- 
+
  ("字符串"
   @defproc[(string? [x any/c]) boolean?]{
  判断值是否为字符串。
@@ -803,7 +803,7 @@
  @interaction[#:eval (bsl) (substring "hello world" 1 5) (substring "hello world" 4)]
 }
   @defproc[(string-copy [s string]) string]{
- 复制字符串。@;why is it included? 
+ 复制字符串。@;why is it included?
  @interaction[#:eval (bsl) (string-copy "hello")]
 }
   @defproc[(string-append [s string] ...) string]{
@@ -873,7 +873,7 @@
  @interaction[#:eval (bsl) (string->list "hello")]
 }
   @defproc[(list->string [l list?]) string]{
- 将字符的表转换为字符串。 
+ 将字符的表转换为字符串。
  @interaction[#:eval (bsl) (list->string (cons #\c (cons #\a (cons #\t '()))))]
 }
   @defproc[(format [f string] [x any/c] ...) string]{
@@ -884,7 +884,7 @@
               (format "the value of ~s is ~a" '(+ 1 1) (+ 1 1))
               ]
  })
- 
+
  ("图像"
   @defproc[(image? [x any/c]) boolean?]{
  判断值是否为图像。
@@ -897,7 +897,7 @@
               (image=? (circle 5 "solid" "green") c1)
               (image=? (circle 10 "solid" "green") c1)]
  })
- 
+
  ("杂项"
   @defproc[(identity [x any/c]) any]{
  返回@racket[x]。
@@ -920,7 +920,7 @@
  @interaction[#:eval (bsl) (eq? (cons 1 '()) (cons 1 '())) one (eq? one one)]
 }
   @defproc[(eqv? [x any/c][y any/c]) boolean?]{
- 判断两个值是否（外延）相等，即从所用作用于其的函数角度来看。 
+ 判断两个值是否（外延）相等，即从所用作用于其的函数角度来看。
  @interaction[#:eval (bsl) (eqv? (cons 1 '()) (cons 1 '())) one (eqv? one one)]
 }
   @defproc[((beginner-=~ =~) [x number][y number][eps non-negative-real]) boolean?]{
@@ -931,7 +931,7 @@
  用@racket[equal?]比较@racket[x]和@racket[y]是否相等，但在数值的情况下使用=~比较。
  @interaction[#:eval (bsl) (equal~? (make-posn 1.01 1.0) (make-posn 1.01 .99) .2)]
 }
-  @defthing[eof eof-object?]{表示文件结束的值： 
+  @defthing[eof eof-object?]{表示文件结束的值：
  @interaction[#:eval (bsl) eof]
 }
   @defproc[(eof-object? [x any/c]) boolean?]{

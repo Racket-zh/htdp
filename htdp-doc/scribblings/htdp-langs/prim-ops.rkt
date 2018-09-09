@@ -32,18 +32,18 @@
 
 (define-syntax-rule
   (mk-eval defs ...)
-  ;; ==> 
+  ;; ==>
   (let ([me (make-base-eval)])
     (define run? #f)
     (call-in-sandbox-context me (lambda () (error-print-source-location #f) (sandbox-output 'string)))
     (interaction-eval #:eval me '(require test-engine/racket-tests))
-    (interaction-eval #:eval me defs) 
+    (interaction-eval #:eval me defs)
     ...
     (lambda (x) (begin0 (me x) (unless run? (set! run? #t) (me '(test)))))))
 
 @(define e1 (mk-eval (require test-engine/racket-tests) (define (fahrenheit->celsius f) (* 5/9 (- f 32)))))
 
-@(define evil 
+@(define evil
 (mk-eval
  (require racket/list)
  (require racket/bool)
@@ -91,8 +91,8 @@
     (typeset-type (cadr func)))))
 
 (define-syntax-rule
-  (prim-variables (section-prefix) empty true false dot ...)
-  ;; ===> 
+  (prim-variables (section-prefix) empty true false dots ...)
+  ;; ===>
   (make-splice
    (list
     @section[#:tag (string-append section-prefix " Pre-Defined Variables")]{预定义变量}
@@ -133,29 +133,29 @@
 ;; ----------------------------------------
 
 (define-syntax-rule (define-form/explicit-lambda define lambda)
-  (gen-define-form/explicit-lambda @racket[define] 
+  (gen-define-form/explicit-lambda @racket[define]
                                    #'lambda @racket[lambda]))
 
 (define (gen-define-form/explicit-lambda define-elem lambda-id lambda-elem)
   (list
    @defform/none[(#,define-elem name (#,lambda-elem (variable variable ...) expression))]{
 
-   另一种定义函数的方法。@racket[name]是函数名，它不能与其他函数或变量相同。 
+   另一种定义函数的方法。@racket[name]是函数名，它不能与其他函数或变量相同。
 
    除了这种语法之外，不能使用@defidform/inline[#,lambda-id]。}))
 
 ;; ----------------------------------------
 
-(define-syntax-rule (prim-forms 
+(define-syntax-rule (prim-forms
                      (section-prefix)
-                     define 
+                     define
                      lambda
                      define-struct [ds-extra ...]
                      define-wish
                      cond
                      else
                      if
-                     and 
+                     and
                      or
                      check-expect
                      check-random
@@ -224,8 +224,8 @@
 
   #|
 
-  @defform*[[(define-wish name)]]{                           
-                           
+  @defform*[[(define-wish name)]]{
+
   Defines a function called @racket[name] that we wish exists but have not
   implemented yet. The wished-for function can be called with one argument, and
   are reported in the test report for the current program.
@@ -235,7 +235,7 @@
 
   @defform/none[#:literals (define-wish)
                 (define-wish name expression)]{
-  Similar to the above form, defines a wished-for function named @racket[name]. If the 
+  Similar to the above form, defines a wished-for function named @racket[name]. If the
   wished-for function is called with one value, it returns the values of @racket[expression]. }
   |#
 
@@ -244,7 +244,7 @@
   @(if with-beginner-function-call
        @defform/none[(name expression expression ...)]{
         调用名为@racket[name]的函数。函数调用的返回值是@racket[name]函数体的值，其中每个函数的参数都被替换为对应@racket[expression]的值。
-     
+
         名为@racket[name]的函数必须在可以调用之前定义。参数@racket[expression]的数量必须和函数所期望的参数数量一致。}
        @elem[])
 
@@ -254,7 +254,7 @@
             #:literals (else)
             [(cond [question-expression answer-expression] ...)
              (#,cond-elem [question-expression answer-expression]
-                          ... 
+                          ...
                           [#,else-elem answer-expression])]]{
 
     根据条件选择子句。@racket[cond]找出第一个计算为@true-elem
@@ -264,7 +264,7 @@
     的值是@else-elem 子句中的@racket[answer-expression]。如果不存在@else-elem
     子句，@cond-elem 报告错误。如果某个@racket[question-expression]的值既不是@true-elem
     也不是@false-elem ，@cond-elem 也报告错误。
-    
+
     不能在@|cond-elem|之外使用@defidform/inline[#,else-id]。}
 
   @; ----------------------------------------------------------------------
@@ -319,7 +319,7 @@
 @(begin
 #reader scribble/comment-reader
 (racketblock
-  
+
 (check-expect (fahrenheit->celsius 212) 100)
 (check-expect (fahrenheit->celsius -40) -40)
 
@@ -350,7 +350,7 @@
 (define-struct player (name x y))
 ;; @italic{Player}是@racket[(make-player String Nat Nat)]
 
-;; String -> Player 
+;; String -> Player
 
 (check-random (create-randomly-placed-player "David Van Horn")
 	      (make-player "David Van Horn" (random WIDTH) (random HEIGHT)))
@@ -386,13 +386,13 @@
 
 以下是@racket[check-satisfied]的简单示例：
 @interaction[
-#:eval 
+#:eval
 (mk-eval
  (require test-engine/racket-tests))
 (check-satisfied 1 odd?)
 ]
 @interaction[
-#:eval 
+#:eval
 (mk-eval
  (require test-engine/racket-tests))
 (check-satisfied 1 even?)
@@ -403,7 +403,7 @@
 @(begin
 #reader scribble/comment-reader
 (racketblock
-;; [cons Number [List-of Number]] -> Boolean 
+;; [cons Number [List-of Number]] -> Boolean
 ;; 测试@racket[htdp-sort]的函数
 
 (check-expect (sorted? (list 1 2 3)) #true)
@@ -437,7 +437,7 @@
 
 是的，@racket[htdp-sort] 的返回值满足@racket[sorted?]谓词：
 @interaction[
-#:eval evil 
+#:eval evil
 (check-satisfied (htdp-sort (list 1 2 0 3)) sorted?)
 ]
 }
@@ -461,14 +461,14 @@
 
 鉴于嵌套数据中存在非精确数，@racket[check-within]是正确的测试工具，如果@racket[delta]足够大，测试就会通过：
 @examples[
-#:eval 
+#:eval
 (mk-eval
  (require test-engine/racket-tests)
  (define-struct roots (x sqrt) #:transparent)
  (define (roots-table xs) (map (lambda (a) (make-roots a (sqrt a))) xs)))
 
 (check-within (roots-table (list 1. 2. 3.))
-              (list 
+              (list
 	        (make-roots 1. 1.)
 	        (make-roots 2  1.414)
 	        (make-roots 3  1.713))
@@ -476,10 +476,10 @@
 ]
 反之，如果@racket[delta]很小，测试就会失败：
 @examples[
-#:eval 
+#:eval
 (mk-eval
  (require test-engine/racket-tests)
-(define-struct roots (x sqrt) 
+(define-struct roots (x sqrt)
   #:transparent
   #:methods gen:custom-write
   [(define (write-proc x port mode)
@@ -487,14 +487,14 @@
  (define (roots-table xs) (map (lambda (a) (make-roots a (sqrt a))) xs)))
 
 (check-within (roots-table (list 2.))
-              (list 
+              (list
 	        (make-roots 2  1.414))
               .00001)
 ]
 
   @racket[expressions]或@racket[expected-expression]返回函数是一种错误；详情参见@racket[check-expect]的说明。
 
-  如果@racket[delta]不是数值，@check-within-elem 报告错误。} 
+  如果@racket[delta]不是数值，@check-within-elem 报告错误。}
 
   @defform*[#:id [check-error check-error-id]
             [(check-error expression expected-error-message)
@@ -513,7 +513,7 @@
     ("robby"    -1)
     ("shriram"  18)))
 
-;; [List-of [list String Number]] String -> Number 
+;; [List-of [list String Number]] String -> Number
 ;; 求@racket[table]中对应于@racket[s]的数值
 
 (define (lookup table s)
@@ -564,7 +564,7 @@
 )
 (check-error (lookup sample-table "kathi") "kathi not found")
 ]
-} 
+}
 
 
   @defform*[#:id [check-member-of check-member-of-id]
@@ -576,7 +576,7 @@
 @(begin
 #reader scribble/comment-reader
 (racketblock
-;; [List-of X] -> X 
+;; [List-of X] -> X
 ;; 从输入表@racket[l]中随机选择一个元素
 (define (pick-one l)
   (list-ref l (random (length l))))
@@ -603,13 +603,13 @@
 @(begin
 #reader scribble/comment-reader
 (racketblock
-;; [Real -> Real] Real -> Real 
+;; [Real -> Real] Real -> Real
 ;; @racket[f]在@racket[x]的斜率是多少？
 (define (differentiate f x)
   (local ((define epsilon .001)
           (define left (- x epsilon))
           (define right (+ x epsilon))
-          (define slope 
+          (define slope
             (/ (- (f right) (f left))
                2 epsilon)))
     slope))
@@ -665,7 +665,7 @@
                                  quasiquote-id quasiquote-elem
                                  unquote-id unquote-elem
                                  unquote-splicing-id unquote-splicing-elem)
-  
+
   (list
    @deftogether[(
     @defform/none[(unsyntax @elem{@racketvalfont{'}@racket[name]})]
@@ -673,14 +673,14 @@
     @defform[#:id [quote quote-id] (quote name)]
     @defform/none[(#,quote-elem part)]
    )]{
- 
+
     quote的name就是符号。quote的part是嵌套表的缩写形式。
- 
+
     通常，这种引用由@litchar{'}写出，例如@racket['(apple
                                       banana)]，但也可以用@quote-elem
     来写，例如@racket[(@#,quote-elem (apple banana))]。}
- 
- 
+
+
    @deftogether[(
     @defform/none[(unsyntax @elem{@racketvalfont{`}@racket[name]})]
     @defform/none[(unsyntax @elem{@racketvalfont{`}@racket[part]})]
@@ -688,43 +688,43 @@
              (quasiquote name)]
     @defform/none[(#,quasiquote-elem part)]
    )]{
- 
+
     类似于@quote-elem ，但支持``unquote''表示跳出表达式。
- 
+
     通常，quasiquote由反引号@litchar{`}写出，例如@racket[`(apple
                                         ,(+ 1 2))]，但也可以用@quasiquote-elem
     来写，例如@racket[(#, @quasiquote-elem (apple ,(+ 1 2)))]。}
- 
- 
+
+
    @deftogether[(
     @defform/none[(unsyntax @elem{@racketvalfont{,}@racket[expression]})]
     @defform[#:id [unquote unquote-id]
              (unquote expression)]
    )]{
- 
+
     在单个quasiquote中，@racketfont{,}@racket[expression]跳出quote，将表达式计算的结果插入缩写的表中。
- 
+
     在多个quasiquote中，@racketfont{,}@racket[expression]只是文本的@racketfont{,}@racket[expression]，@racket[expression]的quasiquote层数将被减一。
- 
+
     通常，unquote由@litchar{,}写出，但也可以用@|unquote-elem|来写。}
- 
- 
+
+
    @deftogether[(
     @defform/none[(unsyntax @elem{@racketvalfont[",@"]@racket[expression]})]
     @defform[#:id [unquote-splicing unquote-splicing-id]
              (unquote-splicing expression)]
    )]{
- 
+
     在单个quasiquote中，@racketfont[",@"]@racket[expression]跳出quote，表达式计算的结果应当是表，它会被拼接入所写的表中。
- 
+
     在多个quasiquote中，拼接的unquote就和unquote一样；即，将quasiquote的层数减一。
- 
+
     通常，拼接的unquote由@litchar{,}写出，单也可以用@|unquote-splicing-elem|来写。}
 
     ))
 
 
-(define-syntax-rule 
+(define-syntax-rule
   (intermediate-forms lambda
                       local
                       letrec
@@ -739,7 +739,7 @@
                           #'let* @racket[let*]
                           #'let @racket[let]
                           #'time @racket[time]
-                          @racket[define] 
+                          @racket[define]
                           @racket[define-struct]))
 
 (define (gen-intermediate-forms lambda-id lambda-elem
