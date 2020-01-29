@@ -719,7 +719,7 @@
 
     在多个quasiquote中，拼接的unquote就和unquote一样；即，将quasiquote的层数减一。
 
-    通常，拼接的unquote由@litchar{,}写出，单也可以用@|unquote-splicing-elem|来写。}
+    通常，拼接的unquote由@litchar{,}写出，但也可以用@|unquote-splicing-elem|来写。}
 
     ))
 
@@ -771,7 +771,7 @@
            (letrec ([name expr-for-let] ...) expression)]{
 
    类似于@local-elem
-   ，单语法更简单。每个@racket[name]用对应@racket[expr-for-let]的值定义变量（或函数）。如果@racket[expr-for-let]是@lambda-elem
+   ，但语法更简单。每个@racket[name]用对应@racket[expr-for-let]的值定义变量（或函数）。如果@racket[expr-for-let]是@lambda-elem
    ，@letrec-elem 就定义函数，否则就定义变量。}
 
 
