@@ -780,7 +780,7 @@
 
    类似于@letrec-elem
    ，但每个@racket[name]只能被用于
-   @racket[expression]，以及@racket[name]之后的@racket[expr-for-let]中。}
+   @racket[expression]，以及@racket[name]之后的@racket[expr-for-let]们中。}
 
 
   @defform[#:id [let let-id]
