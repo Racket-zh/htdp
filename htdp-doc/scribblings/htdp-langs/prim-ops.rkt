@@ -778,9 +778,9 @@
   @defform[#:id [let* let*-id]
            (let* ([name expr-for-let] ...) expression)]{
 
-   Like @letrec-elem, but each @racket[name] can only be used in
-   @racket[expression], and in @racket[expr-for-let]s occuring after
-   that @racket[name].}
+   类似于@letrec-elem
+   ，但每个@racket[name]只能被用于
+   @racket[expression]，以及@racket[name]之后的@racket[expr-for-let]中。}
 
 
   @defform[#:id [let let-id]
